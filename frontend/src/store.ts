@@ -9,6 +9,7 @@ import type { Client, Domain } from "./interfaces";
 
 export const useStore = defineStore("store", {
   state: () => ({
+    syncKey: 0,
     debounceMs: 500,
     cache: {
       clients: {
@@ -47,6 +48,8 @@ export const useStore = defineStore("store", {
           isLoading: false,
           autoClose: 1000
         });
+
+        this.syncKey++;
       } catch (err) {
         toast.error(err);
       }

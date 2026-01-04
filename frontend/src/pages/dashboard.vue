@@ -14,7 +14,7 @@
             </v-row>
           </v-card-title>
           <v-card-text>
-            <sync-log></sync-log>
+            <sync-log :key="store.syncKey"></sync-log>
           </v-card-text>
         </v-card>
       </v-col>
