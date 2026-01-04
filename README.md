@@ -1,3 +1,6 @@
+# PiHole Analysis Tool
+An extension to PiHole, enabling analysis of DNS behaviour within the network. Automatically interrogate domains, flag domains as suspicious, and identify trends.
+
 ![Screenshot](image.png)
 
 ## PiHole Setup
@@ -42,7 +45,7 @@ sudo systemctl start nginx
 ```
 
 ## Configure The Exporter
-Copy the contents of the [dump.sh](./backend/tools/dump.sh) script to `/root`
+Copy the contents of the [dump.sh](./backend/scripts/dump.sh) script to `/root`
 
 
 Create a cron job to run the script
@@ -51,10 +54,10 @@ Create a cron job to run the script
 sudo crontab -e
 ```
 
-Add the following line:
+Add the following line, feel free to change the frequency:
 
 ```
-0 0 * * * ~/dump.sh PASSWORD
+/30 * * * * ~/dump.sh PASSWORD
 ```
 
 Be sure to change 'PASSWORD' to something else

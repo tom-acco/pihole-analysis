@@ -35,7 +35,7 @@ const syncNow = async (file, database) => {
 };
 
 const startSyncSchedule = async (file, database) => {
-    // At 00:30 every day
+    // Every 30 minutes
     schedule.scheduleJob("/30 * * * *", async () => {
         await syncNow(file, database);
     });
