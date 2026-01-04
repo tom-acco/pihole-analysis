@@ -34,7 +34,7 @@
       </v-col>
 
       <v-col class="py-0" v-if="selectedDomains.length >= 1" cols="12">
-        <lookups-line v-model="selectedDomain.Lookups"></lookups-line>
+        <query-count-line v-model="selectedDomain.Queries" :key="selectedDomain.id"></query-count-line>
       </v-col>
     </v-row>
   </v-container>
@@ -54,7 +54,7 @@
   import ClientDomains from "@/components/client-domains.vue";
   import DomainInfo from "@/components/domain-info.vue";
   import DomainActions from "@/components/domain-actions.vue";
-  import LookupsLine from "@/components/lookups-line.vue";
+  import QueryCountLine from "@/components/query-count-line.vue";
 
   export default {
     components: {
@@ -63,7 +63,7 @@
       ClientDomains,
       DomainInfo,
       DomainActions,
-      LookupsLine
+      QueryCountLine
     },
 
     setup() {

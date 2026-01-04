@@ -98,12 +98,12 @@
           key: "risk"
         },
         {
-          title: "Lookups",
-          key: "lookups"
+          title: "Count",
+          key: "queryCount"
         },
         { title: "", key: "actions", align: "end", sortable: false }
       ]);
-      const defaultSort = ref<DataTableSortItem[]>([{ key: "lookups", order: "desc" }]);
+      const defaultSort = ref<DataTableSortItem[]>([{ key: "queryCount", order: "desc" }]);
 
       const domainList = computed<Domain[]>({
         get() {

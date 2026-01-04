@@ -32,7 +32,7 @@
         <client-actions v-model="selectedClient"></client-actions>
       </v-col>
       <v-col class="py-0" v-if="selectedClients.length >= 1" cols="12">
-        <lookups-line v-model="selectedClient.Lookups"></lookups-line>
+        <query-count-line v-model="selectedClient.Queries" :key="selectedClient.id"></query-count-line>
       </v-col>
     </v-row>
   </v-container>
@@ -52,7 +52,7 @@
   import DomainClients from "@/components/domain-clients.vue";
   import ClientInfo from "@/components/client-info.vue";
   import ClientActions from "@/components/client-actions.vue";
-  import LookupsLine from "@/components/lookups-line.vue";
+  import QueryCountLine from "@/components/query-count-line.vue";
 
   export default {
     components: {
@@ -61,7 +61,7 @@
       DomainClients,
       ClientInfo,
       ClientActions,
-      LookupsLine
+      QueryCountLine
     },
 
     setup() {

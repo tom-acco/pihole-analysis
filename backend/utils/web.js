@@ -23,8 +23,8 @@ const startWeb = async (database) => {
 
     app.use("/api", require("../routes/api")(database));
 
-    app.use("/", express.static(`${process.env.INTERNAL_ROOT}/www`));
-    app.use("/*splat", express.static(`${process.env.INTERNAL_ROOT}/www`));
+    app.use("/", express.static(`./www`));
+    app.use("/*splat", express.static(`./www`));
 
     const server = app.listen(
         process.env.WEB_PORT ?? 8000,

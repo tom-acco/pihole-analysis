@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const setupDatabase = require("./utils/database");
-const { startSyncSchedule, syncNow } = require("./utils/sync");
+const { startSyncSchedule } = require("./utils/sync");
 const startWeb = require("./utils/web");
 
 async function run() {
@@ -11,7 +11,7 @@ async function run() {
     const piHoleDumpPort = process.env.PIHOLE_DUMP_PORT ?? "8888";
     const piHoleDumpKey = process.env.PIHOLE_DUMP_KEY ?? "PASSWORD";
 
-    await syncNow(
+    await startSyncSchedule(
         {
             url: `${piHoleURL}:${piHoleDumpPort}/data`,
             key: piHoleDumpKey

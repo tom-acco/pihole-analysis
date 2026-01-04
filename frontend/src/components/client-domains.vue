@@ -59,7 +59,7 @@
   import { defineComponent, ref, computed } from "vue";
   import { useStore } from "@/store";
 
-  import type { Domain, Lookup } from "@/interfaces";
+  import type { Domain, Query } from "@/interfaces";
 
   import type { DataTableHeader } from "vuetify";
   import type { DataTableSortItem } from "vuetify";
@@ -111,16 +111,13 @@
           key: "risk"
         },
         {
-          title: "Lookups",
-          key: "lookups",
-          value: (v) =>
-            v.Lookups.reduce((accumulator: number, currentObject: Lookup) => {
-              return accumulator + currentObject.count;
-            }, 0)
+          title: "Count",
+          key: "queryCount",
+          value: (v) => v.Queries.length
         },
         { title: "", key: "actions", align: "end", sortable: false }
       ]);
-      const defaultSort = ref<DataTableSortItem[]>([{ key: "lookups", order: "desc" }]);
+      const defaultSort = ref<DataTableSortItem[]>([{ key: "queryCount", order: "desc" }]);
 
       const selectedDomain = computed<Domain[] | null>({
         get() {

@@ -6,7 +6,7 @@ interface Client {
   ipaddress: string;
   comment: string | null;
   Domains: Domain[];
-  Lookups: Lookup[];
+  Queries: Query[];
   createdAt: string;
   updatedAt: string;
 }
@@ -22,7 +22,7 @@ interface Domain {
   flagged: boolean;
   hidden: boolean;
   Clients: Client[];
-  Lookups: Lookup[];
+  Queries: Query[];
   createdAt: string;
   updatedAt: string;
 }
@@ -34,9 +34,10 @@ interface ClientDomainLink {
   updatedAt: string;
 }
 
-interface Lookup {
+interface Query {
   id: number;
-  count: number;
+  piHoleId: number;
+  timestamp: string;
   ClientId: number;
   DomainId: number;
   createdAt: string;
@@ -50,4 +51,4 @@ interface DataTableParams {
   sortBy: DataTableSortItem[];
 }
 
-export type { Client, Domain, ClientDomainLink, Lookup, DataTableParams };
+export type { Client, Domain, ClientDomainLink, Query, DataTableParams };

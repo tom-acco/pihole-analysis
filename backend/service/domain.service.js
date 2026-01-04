@@ -31,11 +31,11 @@ exports.DomainService = class DomainService {
                     "updatedAt",
                     [
                         Sequelize.literal(`(
-        SELECT COALESCE(SUM("count"), 0)
-        FROM "Lookups"
-        WHERE "Lookups"."DomainId" = "Domain"."id"
-      )`),
-                        "lookups"
+                            SELECT COUNT(*)
+                            FROM "Queries"
+                            WHERE "Queries"."DomainId" = "Domain"."id"
+                        )`),
+                        "queryCount"
                     ]
                 ],
                 raw: raw ?? false,
@@ -54,7 +54,7 @@ exports.DomainService = class DomainService {
                     model: this.database.models.Client,
                     include: [
                         {
-                            model: this.database.models.Lookup,
+                            model: this.database.models.Query,
                             where: { DomainId: id },
                             raw: raw ?? false,
                             paranoid: showDeleted ? false : true

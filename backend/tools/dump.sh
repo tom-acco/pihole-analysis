@@ -21,21 +21,17 @@ mkdir -p "$OUT_DIR"
 
 # ---- Run query, process, and encrypt ----
 /usr/bin/sqlite3 "$DB" \
-"SELECT client || '|' || domain
+"SELECT id, timestamp, client, domain
  FROM queries
  WHERE status IN (2,3,12,13,14,17)
    AND timestamp >= '$(($(date +%s) - 86400))'" \
-| sort \
-| uniq -c \
-| sort -n -r \
-| awk '
+| awk -F'|' '
 BEGIN {
     print "["
 }
 {
-    split($2, a, "|")
-    printf "%s  {\"count\": %d, \"client\": \"%s\", \"domain\": \"%s\"}",
-           (NR>1?",\n":""), $1, a[1], a[2]
+    printf "%s  {\"id\": %d, \"timestamp\": %d, \"client\": \"%s\", \"domain\": \"%s\"}",
+           (NR>1?",\n":""), $1, $2, $3, $4
 }
 END {
     print "\n]"

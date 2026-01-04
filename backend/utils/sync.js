@@ -2,7 +2,7 @@ const schedule = require("node-schedule");
 
 const ClientController = require("../controllers/client.controller");
 const DomainController = require("../controllers/domain.controller");
-const LookupController = require("../controllers/lookup.controller");
+const QueryController = require("../controllers/query.controller");
 
 const downloadFile = require("./download");
 const decryptFile = require("./decrypt");
@@ -10,7 +10,7 @@ const decryptFile = require("./decrypt");
 const syncNow = async (file, database) => {
     const clientController = new ClientController(database);
     const domainController = new DomainController(database);
-    const lookupController = new LookupController(database);
+    const queryController = new QueryController(database);
 
     try {
         const ct = await downloadFile(file.url);
@@ -24,7 +24,10 @@ const syncNow = async (file, database) => {
 
             await client.addDomain(domain);
 
-            await lookupController.create(client, domain, item.count);
+            await queryController.createIfNotExist(client, domain, {
+                piHoleId: item.id,
+                timestamp: new Date(item.timestamp * 1000)
+            });
         }
     } catch (err) {
         console.error("Error:", err.message);
@@ -33,7 +36,7 @@ const syncNow = async (file, database) => {
 
 const startSyncSchedule = async (file, database) => {
     // At 00:30 every day
-    schedule.scheduleJob("30 0 * * *", async () => {
+    schedule.scheduleJob("/30 * * * *", async () => {
         await syncNow(file, database);
     });
 };

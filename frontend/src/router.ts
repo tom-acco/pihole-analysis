@@ -5,7 +5,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "main",
-    redirect: "domains",
+    redirect: "dashboard",
     component: () => import("@/layouts/default.vue"),
     beforeEnter: async () => {},
     children: [

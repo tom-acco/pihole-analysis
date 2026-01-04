@@ -16,9 +16,8 @@ module.exports = class ClientController {
         searchOptions.where = {
             ...(filter && {
                 [Op.or]: [
-                    { domain: { [Op.like]: `%${filter}%` } },
-                    { category: { [Op.like]: `%${filter}%` } },
-                    { owner: { [Op.like]: `%${filter}%` } }
+                    { ipaddress: { [Op.like]: `%${filter}%` } },
+                    { alias: { [Op.like]: `%${filter}%` } },
                 ]
             }),
             ...(attributes || {})

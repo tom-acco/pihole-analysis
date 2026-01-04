@@ -26,28 +26,34 @@ exports.ClientService = class ClientService {
     }
 
     async getDetail(id, raw, showDeleted) {
-        const result = await this.database.models.Client.findByPk(id, {
-            include: [
-                {
-                    model: this.database.models.Domain,
-                    include: [
-                        {
-                            model: this.database.models.Lookup,
-                            where: { ClientId: id },
-                            raw: raw ?? false,
-                            paranoid: showDeleted ? false : true
-                        }
-                    ],
-                    where: { hidden: false },
-                    raw: raw ?? false,
-                    paranoid: showDeleted ? false : true
-                }
-            ],
-            raw: raw ?? false,
-            paranoid: showDeleted ? false : true
-        });
+        try {
+            const result = await this.database.models.Client.findByPk(id, {
+                include: [
+                    {
+                        model: this.database.models.Domain,
+                        where: { hidden: false },
+                        required: false,
+                        include: [
+                            {
+                                model: this.database.models.Query,
+                                where: { ClientId: id },
+                                required: false,
+                                raw: raw ?? false,
+                                paranoid: showDeleted ? false : true
+                            }
+                        ],
+                        raw: raw ?? false,
+                        paranoid: showDeleted ? false : true
+                    }
+                ],
+                raw: raw ?? false,
+                paranoid: showDeleted ? false : true
+            });
 
-        return result;
+            return result;
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     async getByIP(ipaddress, raw, showDeleted) {

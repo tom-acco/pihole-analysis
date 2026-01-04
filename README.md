@@ -1,3 +1,5 @@
+![Screenshot](image.png)
+
 ## PiHole Setup
 The following guide will configure the PiHole to export 24 hours worth of query results (domain, client, count) to an encrypted file, accessible via a web server on a separate port.
 

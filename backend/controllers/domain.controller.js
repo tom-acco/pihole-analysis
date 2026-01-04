@@ -28,7 +28,7 @@ module.exports = class DomainController {
 
         if (sortBy) {
             const orders = ["asc", "desc"];
-            const columns = ["domain", "risk", "category", "owner", "lookups"];
+            const columns = ["domain", "risk", "category", "owner", "queryCount"];
 
             const order = [];
 

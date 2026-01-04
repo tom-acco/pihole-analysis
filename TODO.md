@@ -2,8 +2,8 @@
 
 -   ~~Prettier~~
 -   ~~Lint~~
--   Better lookup sync so we don't get duplicates...
-        - Check timestamp on export before syncing?
+-   ~~Better lookup sync so we don't get duplicates...~~
+        - ~~Check timestamp on export before syncing?~~
 -   Web authentication (no user, just password)
 -   Middleware
     -   Check auth
@@ -23,7 +23,7 @@
 -   Dashboard
     -   ~~Show new~~
     -   ~~Show flagged~~
-    -   ~~ Show hidden~~
+    -   ~~Show hidden~~
     -   Interrogate all new
     -   Acknowledge all new
 -   Domains

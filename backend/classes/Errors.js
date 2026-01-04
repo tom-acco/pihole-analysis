@@ -20,7 +20,7 @@ exports.DomainControllerException = class DomainControllerException extends (
     }
 };
 
-exports.LookupControllerException = class LookupControllerException extends (
+exports.QueryControllerException = class QueryControllerException extends (
     Error
 ) {
     constructor(message, status) {

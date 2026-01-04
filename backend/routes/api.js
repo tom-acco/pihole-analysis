@@ -44,7 +44,6 @@ const api = (database) => {
     });
 
     router.get("/client", async (req, res) => {
-        console.log(req.query);
         try {
             const result = await clientController.getClientDomains(
                 req.query.id

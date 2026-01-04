@@ -33,18 +33,19 @@ const setupDatabase = async () => {
         }
     });
 
-    const Lookup = sequelize.define("Lookup", {
-        count: DataTypes.NUMBER
+    const Query = sequelize.define("Query", {
+        piHoleId: DataTypes.NUMBER,
+        timestamp: DataTypes.DATE
     });
 
     Client.belongsToMany(Domain, { through: "ClientDomains" });
-    Client.hasMany(Lookup);
+    Client.hasMany(Query);
 
     Domain.belongsToMany(Client, { through: "ClientDomains" });
-    Domain.hasMany(Lookup);
+    Domain.hasMany(Query);
 
-    Lookup.belongsTo(Domain);
-    Lookup.belongsTo(Client);
+    Query.belongsTo(Domain);
+    Query.belongsTo(Client);
 
     await sequelize.sync();
 

@@ -73,9 +73,14 @@
           title: "Alias",
           key: "alias"
         },
+        {
+          title: "Count",
+          key: "queryCount",
+          value: (v) => v.Queries.length
+        },
         { title: "", key: "actions", align: "end", sortable: false }
       ]);
-      const defaultSort = ref<DataTableSortItem[]>([{ key: "ipaddress", order: "asc" }]);
+      const defaultSort = ref<DataTableSortItem[]>([{ key: "queryCount", order: "desc" }]);
 
       const selectedClient = computed<Client[]>({
         get() {
