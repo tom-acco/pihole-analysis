@@ -51,4 +51,15 @@ interface DataTableParams {
   sortBy: DataTableSortItem[];
 }
 
-export type { Client, Domain, ClientDomainLink, Query, DataTableParams };
+interface Sync {
+  id: number;
+  startTime: string;
+  endTime: string;
+  clients: number;
+  domains: number;
+  queries: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type { Client, Domain, ClientDomainLink, Query, DataTableParams, Sync };

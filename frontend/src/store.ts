@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
 
 import domainApi from "@/api/domains";
+import syncApi from "@/api/sync";
 
 import type { Client, Domain } from "./interfaces";
 
@@ -34,6 +35,23 @@ export const useStore = defineStore("store", {
   }),
 
   actions: {
+    async syncNow() {
+      try {
+        const t = toast.loading(`Syncing now...`);
+
+        await syncApi.syncNow();
+
+        toast.update(t, {
+          render: `Success.`,
+          type: "success",
+          isLoading: false,
+          autoClose: 1000
+        });
+      } catch (err) {
+        toast.error(err);
+      }
+    },
+
     async interrogateDomain(domain: Domain) {
       try {
         const t = toast.loading(`Submitting interrogation request...`);

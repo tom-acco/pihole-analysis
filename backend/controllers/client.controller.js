@@ -77,11 +77,11 @@ module.exports = class ClientController {
         const existing = await this.clientService.getByIP(ipaddress);
 
         if (existing) {
-            return existing;
+            return [existing, false];
         }
 
         const result = await this.clientService.create(ipaddress);
 
-        return result;
+        return [result, true];
     }
 };

@@ -19,7 +19,7 @@ module.exports = class QueryController {
         );
 
         if (existing) {
-            return existing;
+            return [existing, false];
         }
 
         const result = await this.queryService.create(
@@ -30,6 +30,6 @@ module.exports = class QueryController {
         result.setClient(client);
         result.setDomain(domain);
 
-        return result;
+        return [result, true];
     }
 };

@@ -1,8 +1,10 @@
 const ClientController = require(`../controllers/client.controller`);
 const DomainController = require(`../controllers/domain.controller`);
+const SyncController = require(`../controllers/sync.controller`);
 
 const { ClientControllerException } = require("../classes/Errors");
 const { DomainControllerException } = require("../classes/Errors");
+const { SyncControllerException } = require("../classes/Errors");
 
 const api = (database) => {
     //Create the router
@@ -10,6 +12,35 @@ const api = (database) => {
 
     const clientController = new ClientController(database);
     const domainController = new DomainController(database);
+    const syncController = new SyncController(database);
+
+    router.get("/sync", async (req, res) => {
+        try {
+            const result = await syncController.getLast100();
+            return res.status(200).json(result);
+        } catch (err) {
+            if (err instanceof SyncControllerException) {
+                return res.status(err.status).send(err.message);
+            } else {
+                console.error("Error getting sync logs", err);
+                return res.status(500).send();
+            }
+        }
+    });
+
+    router.post("/sync", async (req, res) => {
+        try {
+            const result = await syncController.syncNow();
+            return res.status(200).json(result);
+        } catch (err) {
+            if (err instanceof SyncControllerException) {
+                return res.status(err.status).send(err.message);
+            } else {
+                console.error("Error running sync", err);
+                return res.status(500).send();
+            }
+        }
+    });
 
     router.get("/clients", async (req, res) => {
         try {
@@ -198,7 +229,7 @@ const api = (database) => {
             );
             return res.status(200).json(result);
         } catch (err) {
-            if (err instanceof ClientControllerException) {
+            if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);
             } else {
                 console.error("Error getting domain", err);
@@ -212,7 +243,7 @@ const api = (database) => {
             const result = await domainController.interrogate(req.body.domain);
             return res.status(200).send(result);
         } catch (err) {
-            if (err instanceof ClientControllerException) {
+            if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);
             } else {
                 console.error("Error interrogating domain", err);
@@ -228,7 +259,7 @@ const api = (database) => {
             );
             return res.status(200).send(result);
         } catch (err) {
-            if (err instanceof ClientControllerException) {
+            if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);
             } else {
                 console.error("Error acknowledging domain", err);
@@ -242,7 +273,7 @@ const api = (database) => {
             const result = await domainController.toggleFlag(req.body.domain);
             return res.status(200).send(result);
         } catch (err) {
-            if (err instanceof ClientControllerException) {
+            if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);
             } else {
                 console.error("Error flagging domain", err);
@@ -256,7 +287,7 @@ const api = (database) => {
             const result = await domainController.toggleHide(req.body.domain);
             return res.status(200).send(result);
         } catch (err) {
-            if (err instanceof ClientControllerException) {
+            if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);
             } else {
                 console.error("Error hiding domain", err);

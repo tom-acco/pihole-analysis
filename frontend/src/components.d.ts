@@ -21,10 +21,10 @@ declare module 'vue' {
     DomainInfo: typeof import('./components/domain-info.vue')['default']
     DomainList: typeof import('./components/domain-list.vue')['default']
     DomainMenu: typeof import('./components/domain-menu.vue')['default']
-    LookupsLine: typeof import('./components/lookups-line.vue')['default']
     QueryCountLine: typeof import('./components/query-count-line.vue')['default']
     RiskRating: typeof import('./components/risk-rating.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SyncLog: typeof import('./components/sync-log.vue')['default']
   }
 }

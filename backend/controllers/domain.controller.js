@@ -80,12 +80,12 @@ module.exports = class DomainController {
         const existing = await this.domainService.getByDomain(domain);
 
         if (existing) {
-            return existing;
+            return [existing, false];
         }
 
         const result = await this.domainService.create(domain);
 
-        return result;
+        return [result, true];
     }
 
     async interrogate(domain) {

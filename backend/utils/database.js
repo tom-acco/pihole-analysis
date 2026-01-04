@@ -38,6 +38,14 @@ const setupDatabase = async () => {
         timestamp: DataTypes.DATE
     });
 
+    const Sync = sequelize.define("Sync", {
+        startTime: DataTypes.DATE,
+        endTime: DataTypes.DATE,
+        clients: DataTypes.NUMBER,
+        domains: DataTypes.NUMBER,
+        queries: DataTypes.NUMBER
+    });
+
     Client.belongsToMany(Domain, { through: "ClientDomains" });
     Client.hasMany(Query);
 

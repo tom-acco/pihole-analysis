@@ -4,6 +4,24 @@
       <v-col class="py-0" cols="12">
         <v-card>
           <v-card-title>
+            <v-row>
+              <v-col cols="6">
+                <span class="text-h6">Sync Log</span>
+              </v-col>
+              <v-col class="text-right" cols="6">
+                <v-chip variant="flat" color="primary" @click="store.syncNow()" label><v-icon icon="mdi-sync"></v-icon></v-chip>
+              </v-col>
+            </v-row>
+          </v-card-title>
+          <v-card-text>
+            <sync-log></sync-log>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col class="py-0" cols="12">
+        <v-card>
+          <v-card-title>
             <span class="text-h6">New Domains</span>
           </v-card-title>
           <v-card-text>
@@ -59,10 +77,12 @@
 
   import api from "@/api/domains";
 
+  import SyncLog from "@/components/sync-log.vue";
   import DomainList from "@/components/domain-list.vue";
 
   export default {
     components: {
+      SyncLog,
       DomainList
     },
 

@@ -26,6 +26,8 @@
     -   ~~Show hidden~~
     -   Interrogate all new
     -   Acknowledge all new
+    -   ~~Sync log~~
+    -   ~~Force sync~~
 -   Domains
     -   ~~Show clients~~
 -   Clients
