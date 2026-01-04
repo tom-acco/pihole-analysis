@@ -1,6 +1,15 @@
 <template>
   <v-card>
-    <v-card-title>Client Domains</v-card-title>
+    <v-card-title>
+      <v-row>
+        <v-col cols="6">
+          <span class="text-h6">Client Domains</span>
+        </v-col>
+        <v-col class="text-right" cols="6">
+          <domain-list-actions v-model="items"></domain-list-actions>
+        </v-col>
+      </v-row>
+    </v-card-title>
 
     <v-card-text>
       <v-sheet color="rgba(0, 0, 0, .12)">
@@ -66,13 +75,15 @@
 
   import RiskRating from "@/components/risk-rating.vue";
   import DomainMenu from "@/components/domain-menu.vue";
+  import DomainListActions from "@/components/domain-list-actions.vue";
 
   export default defineComponent({
     name: "ClientDomains",
 
     components: {
       RiskRating,
-      DomainMenu
+      DomainMenu,
+      DomainListActions
     },
 
     props: {

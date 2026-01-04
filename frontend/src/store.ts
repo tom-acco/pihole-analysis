@@ -55,11 +55,28 @@ export const useStore = defineStore("store", {
       }
     },
 
-    async interrogateDomain(domain: Domain) {
-      try {
-        const t = toast.loading(`Submitting interrogation request...`);
+    async interrogateDomain(domain: Domain | Domain[]) {
+      const domains = Array.isArray(domain) ? domain : [domain];
 
-        const result = await domainApi.interrogate(domain.domain);
+      try {
+        let i: number = 1;
+
+        const t = toast.loading(`Interrogating ${domains[0]!.domain}.`);
+
+        for (const item of domains) {
+          toast.update(t, {
+            render: `Interrogating ${item.domain}.`
+          });
+
+          const result = await domainApi.interrogate(item.domain);
+
+          item.owner = result.owner;
+          item.category = result.category;
+          item.risk = result.risk;
+          item.comment = result.comment;
+
+          i++;
+        }
 
         toast.update(t, {
           render: `Success.`,
@@ -67,23 +84,21 @@ export const useStore = defineStore("store", {
           isLoading: false,
           autoClose: 1000
         });
-
-        domain.owner = result.owner;
-        domain.category = result.category;
-        domain.risk = result.risk;
-        domain.comment = result.comment;
       } catch (err) {
         toast.error(err);
       }
     },
 
-    async toggleDomainAcknowledge(domain: Domain) {
+    async toggleDomainAcknowledge(domain: Domain | Domain[]) {
+      const domains = Array.isArray(domain) ? domain : [domain];
+
       try {
-        const result = await domainApi.acknowledge(domain.domain);
+        for (const item of domains) {
+          const result = await domainApi.acknowledge(item.domain);
+          item.acknowledged = result.acknowledged;
+        }
 
-        toast.success(`Domain ${result.acknowledged ? "acknowledged" : "unacknowledged"}.`);
-
-        domain.acknowledged = result.acknowledged;
+        toast.success(`Domain acknowledged`);
       } catch (err) {
         toast.error(err);
       }

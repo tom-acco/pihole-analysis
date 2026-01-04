@@ -57,7 +57,7 @@ sudo crontab -e
 Add the following line, feel free to change the frequency:
 
 ```
-/30 * * * * ~/dump.sh PASSWORD
+*/30 * * * * ~/dump.sh PASSWORD
 ```
 
 Be sure to change 'PASSWORD' to something else

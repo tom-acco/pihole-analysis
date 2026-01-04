@@ -22,7 +22,14 @@
       <v-col class="py-0" cols="12">
         <v-card>
           <v-card-title>
-            <span class="text-h6">New Domains</span>
+            <v-row>
+              <v-col cols="6">
+                <span class="text-h6">New Domains</span>
+              </v-col>
+              <v-col class="text-right" cols="6">
+                <domain-list-actions v-model="store.cache.new.items"></domain-list-actions>
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-card-text>
             <domain-list :api-method="api.getNew" v-model:items="store.cache.new.items" v-model:total="store.cache.new.total"></domain-list>
@@ -33,7 +40,14 @@
       <v-col class="py-0" cols="12">
         <v-card>
           <v-card-title>
-            <span class="text-h6">Flagged Domains</span>
+            <v-row>
+              <v-col cols="6">
+                <span class="text-h6">Flagged Domains</span>
+              </v-col>
+              <v-col class="text-right" cols="6">
+                <domain-list-actions v-model="store.cache.flagged.items"></domain-list-actions>
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-card-text>
             <domain-list :api-method="api.getFlagged" v-model:items="store.cache.flagged.items" v-model:total="store.cache.flagged.total"></domain-list>
@@ -79,11 +93,13 @@
 
   import SyncLog from "@/components/sync-log.vue";
   import DomainList from "@/components/domain-list.vue";
+  import DomainListActions from "@/components/domain-list-actions.vue";
 
   export default {
     components: {
       SyncLog,
-      DomainList
+      DomainList,
+      DomainListActions
     },
 
     setup() {
