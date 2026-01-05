@@ -55,6 +55,7 @@ interface Sync {
   id: number;
   startTime: string;
   endTime: string;
+  status: number;
   clients: number;
   domains: number;
   queries: number;

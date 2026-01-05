@@ -30,8 +30,11 @@ const api = (database) => {
 
     router.post("/sync", async (req, res) => {
         try {
-            const result = await syncController.syncNow();
-            return res.status(200).json(result);
+            syncController.syncNow();
+
+            setTimeout(() => {
+                return res.status(200).send();
+            }, 500)
         } catch (err) {
             if (err instanceof SyncControllerException) {
                 return res.status(err.status).send(err.message);

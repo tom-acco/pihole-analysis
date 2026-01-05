@@ -6,6 +6,7 @@ exports.SyncService = class SyncService {
     async getWithLimit(limit, raw, showDeleted) {
         const results = await this.database.models.Sync.findAll({
             limit: limit,
+            order: [["id", "DESC"]],
             raw: raw ?? false,
             paranoid: showDeleted ? false : true
         });
@@ -16,5 +17,16 @@ exports.SyncService = class SyncService {
     async create(syncLog) {
         const result = await this.database.models.Sync.create(syncLog);
         return result;
+    }
+
+    async endStale() {
+        await this.database.models.Sync.update(
+            { status: 3, endTime: new Date() },
+            {
+                where: {
+                    status: 1
+                }
+            }
+        );
     }
 };

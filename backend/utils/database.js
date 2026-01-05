@@ -41,6 +41,7 @@ const setupDatabase = async () => {
     const Sync = sequelize.define("Sync", {
         startTime: DataTypes.DATE,
         endTime: DataTypes.DATE,
+        status: DataTypes.STRING,
         clients: DataTypes.NUMBER,
         domains: DataTypes.NUMBER,
         queries: DataTypes.NUMBER

@@ -26,6 +26,16 @@ module.exports = class SyncController {
         this.syncService = new SyncService(this.database);
     }
 
+    async getLast() {
+        const result = await this.syncService.getWithLimit(1);
+
+        if (result === null) {
+            return null;
+        }
+
+        return result[0];
+    }
+
     async getLast100() {
         const result = await this.syncService.getWithLimit(100);
         return result;
@@ -36,54 +46,85 @@ module.exports = class SyncController {
         return result;
     }
 
+    async endStale() {
+        const result = await this.syncService.endStale();
+        return result;
+    }
+
     async syncNow() {
+        const lastSync = await this.getLast();
+
+        if (lastSync && lastSync.status === 1) {
+            return;
+        }
+
         const ct = await downloadFile(
             `${this.piHoleURL}:${this.piHoleDumpPort}/data`
         );
+
         const pt = decryptFile(ct, this.piHoleDumpKey);
 
         const data = JSON.parse(pt);
 
-        const syncLog = {
+        const syncLog = await this.log({
             startTime: new Date(),
+            endTime: null,
+            status: 1,
             clients: 0,
             domains: 0,
             queries: 0
-        };
+        });
 
-        for (const item of data) {
-            const [client, isNewClient] =
-                await this.clientController.createIfNotExist(item.client);
-            const [domain, isNewDomain] =
-                await this.domainController.createIfNotExist(item.domain);
+        try {
+            for (const item of data) {
+                const [client, isNewClient] =
+                    await this.clientController.createIfNotExist(item.client);
+                const [domain, isNewDomain] =
+                    await this.domainController.createIfNotExist(item.domain);
 
-            if(domain.ignored === true){
-                continue;
+                if (domain.ignored === true) {
+                    continue;
+                }
+
+                await client.addDomain(domain);
+
+                const [query, isNewQuery] =
+                    await this.queryController.createIfNotExist(
+                        client,
+                        domain,
+                        {
+                            piHoleId: item.id,
+                            timestamp: new Date(item.timestamp * 1000)
+                        }
+                    );
+
+                if (isNewClient) {
+                    syncLog.clients++;
+                }
+
+                if (isNewDomain) {
+                    syncLog.domains++;
+                }
+
+                if (isNewQuery) {
+                    syncLog.queries++;
+                }
+
+                await syncLog.save();
             }
 
-            await client.addDomain(domain);
+            await syncLog.update({
+                endTime: new Date(),
+                status: 2
+            });
+        } catch (err) {
+            console.error(`Sync fail:`, err);
 
-            const [query, isNewQuery] =
-                await this.queryController.createIfNotExist(client, domain, {
-                    piHoleId: item.id,
-                    timestamp: new Date(item.timestamp * 1000)
-                });
-
-            if (isNewClient) {
-                syncLog.clients++;
-            }
-
-            if (isNewDomain) {
-                syncLog.domains++;
-            }
-
-            if (isNewQuery) {
-                syncLog.queries++;
-            }
+            await syncLog.update({
+                endTime: new Date(),
+                status: 3
+            });
         }
-
-        syncLog.endTime = new Date();
-        await this.log(syncLog);
     }
 
     async startSyncSchedule(cron) {

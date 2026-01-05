@@ -9,6 +9,7 @@ async function run() {
     const database = await setupDatabase();
 
     const syncController = new SyncController(database);
+    await syncController.endStale();
     syncController.startSyncSchedule("*/30 * * * *");
 
     await startWeb(database);
