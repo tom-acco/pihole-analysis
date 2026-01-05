@@ -20,7 +20,7 @@ interface Domain {
   comment: string;
   acknowledged: boolean;
   flagged: boolean;
-  hidden: boolean;
+  ignored: boolean;
   Clients: Client[];
   Queries: Query[];
   createdAt: string;

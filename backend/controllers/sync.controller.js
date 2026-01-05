@@ -57,6 +57,10 @@ module.exports = class SyncController {
             const [domain, isNewDomain] =
                 await this.domainController.createIfNotExist(item.domain);
 
+            if(domain.ignored === true){
+                continue;
+            }
+
             await client.addDomain(domain);
 
             const [query, isNewQuery] =

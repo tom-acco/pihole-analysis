@@ -28,7 +28,7 @@ export const useStore = defineStore("store", {
         total: 0 as number,
         items: [] as Domain[]
       },
-      hidden: {
+      ignored: {
         total: 0 as number,
         items: [] as Domain[]
       }
@@ -116,13 +116,13 @@ export const useStore = defineStore("store", {
       }
     },
 
-    async toggleDomainHide(domain: Domain) {
+    async toggleDomainIgnore(domain: Domain) {
       try {
-        const result = await domainApi.hide(domain.domain);
+        const result = await domainApi.ignore(domain.domain);
 
-        toast.success(`Domain ${result.hidden ? "hidden" : "unhidden"}.`);
+        toast.success(`Domain ${result.ignored ? "ignored" : "unignored"}.`);
 
-        domain.hidden = result.hidden;
+        domain.ignored = result.ignored;
       } catch (err) {
         toast.error(err);
       }

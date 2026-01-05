@@ -31,7 +31,7 @@ exports.ClientService = class ClientService {
                 include: [
                     {
                         model: this.database.models.Domain,
-                        where: { hidden: false },
+                        where: { ignored: false },
                         required: false,
                         include: [
                             {

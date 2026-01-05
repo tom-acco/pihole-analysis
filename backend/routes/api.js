@@ -109,7 +109,7 @@ const api = (database) => {
                 req.query.page,
                 req.query.itemsPerPage,
                 req.query.sortBy,
-                { hidden: false }
+                { ignored: false }
             );
 
             return res.status(200).json(result);
@@ -142,7 +142,7 @@ const api = (database) => {
                 req.query.page,
                 req.query.itemsPerPage,
                 req.query.sortBy,
-                { hidden: false, acknowledged: false, flagged: false }
+                { ignored: false, acknowledged: false, flagged: false }
             );
 
             return res.status(200).json(result);
@@ -175,7 +175,7 @@ const api = (database) => {
                 req.query.page,
                 req.query.itemsPerPage,
                 req.query.sortBy,
-                { hidden: false, flagged: true }
+                { ignored: false, flagged: true }
             );
 
             return res.status(200).json(result);
@@ -189,7 +189,7 @@ const api = (database) => {
         }
     });
 
-    router.get("/domains/hidden", async (req, res) => {
+    router.get("/domains/ignored", async (req, res) => {
         try {
             if (!req.query.search) {
                 req.query.search = null;
@@ -208,7 +208,7 @@ const api = (database) => {
                 req.query.page,
                 req.query.itemsPerPage,
                 req.query.sortBy,
-                { hidden: true }
+                { ignored: true }
             );
 
             return res.status(200).json(result);
@@ -282,9 +282,9 @@ const api = (database) => {
         }
     });
 
-    router.post("/domain/hide", async (req, res) => {
+    router.post("/domain/ignore", async (req, res) => {
         try {
-            const result = await domainController.toggleHide(req.body.domain);
+            const result = await domainController.toggleIgnore(req.body.domain);
             return res.status(200).send(result);
         } catch (err) {
             if (err instanceof DomainControllerException) {

@@ -27,7 +27,7 @@ const setupDatabase = async () => {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
-        hidden: {
+        ignored: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }

@@ -33,12 +33,12 @@
 
           <v-col cols="3">
             <v-btn
-              :variant="selectedDomain.hidden ? 'elevated' : 'outlined'"
+              :variant="selectedDomain.ignored ? 'elevated' : 'outlined'"
               color="grey-darken-2"
               prepend-icon="mdi-eye-off"
-              @click="store.toggleDomainHide(selectedDomain)"
+              @click="store.toggleDomainIgnore(selectedDomain)"
               block
-              >Hide</v-btn
+              >Ignore</v-btn
             >
           </v-col>
         </v-row>

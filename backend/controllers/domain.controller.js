@@ -141,7 +141,7 @@ module.exports = class DomainController {
         return result;
     }
 
-    async toggleHide(domain) {
+    async toggleIgnore(domain) {
         const result = await this.domainService.getByDomain(domain);
 
         if (result === null) {
@@ -149,7 +149,7 @@ module.exports = class DomainController {
         }
 
         await result.update({
-            hidden: !result.hidden
+            ignored: !result.ignored
         });
 
         return result;

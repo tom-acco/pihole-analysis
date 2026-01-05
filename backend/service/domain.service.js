@@ -26,7 +26,7 @@ exports.DomainService = class DomainService {
                     "risk",
                     "acknowledged",
                     "flagged",
-                    "hidden",
+                    "ignored",
                     "createdAt",
                     "updatedAt",
                     [

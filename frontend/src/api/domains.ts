@@ -56,9 +56,9 @@ const getFlagged = async (params: DataTableParams) => {
   }
 };
 
-const getHidden = async (params: DataTableParams) => {
+const getIgnored = async (params: DataTableParams) => {
   try {
-    const res = await axios.get("/api/domains/hidden", { params });
+    const res = await axios.get("/api/domains/ignored", { params });
     return {
       total: res.data.count,
       items: res.data.rows
@@ -134,9 +134,9 @@ const flag = async (domain: string) => {
   }
 };
 
-const hide = async (domain: string) => {
+const ignore = async (domain: string) => {
   try {
-    const res = await axios.post("/api/domain/hide", { domain: domain });
+    const res = await axios.post("/api/domain/ignore", { domain: domain });
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -153,10 +153,10 @@ export default {
   getDomains: getDomains,
   getNew: getNew,
   getFlagged: getFlagged,
-  getHidden: getHidden,
+  getIgnored: getIgnored,
   getDomain: getDomain,
   interrogate: interrogate,
   acknowledge: acknowledge,
   flag: flag,
-  hide: hide
+  ignore: ignore
 };

@@ -60,23 +60,23 @@
           <v-card-title>
             <v-row>
               <v-col cols="6">
-                <span class="text-h6">Hidden Domains</span>
+                <span class="text-h6">Ignored Domains</span>
               </v-col>
               <v-col class="text-right" cols="6">
-                <v-chip variant="flat" color="grey-darken-2" @click="showHidden = !showHidden" label><v-icon :icon="showHidden ? 'mdi-eye-off' : 'mdi-eye'"></v-icon></v-chip>
+                <v-chip variant="flat" color="grey-darken-2" @click="showIgnored = !showIgnored" label><v-icon :icon="showIgnored ? 'mdi-eye-off' : 'mdi-eye'"></v-icon></v-chip>
               </v-col>
             </v-row>
           </v-card-title>
           <v-card-text>
             <domain-list
-              v-if="showHidden"
-              :api-method="api.getHidden"
-              v-model:items="store.cache.hidden.items"
-              v-model:total="store.cache.hidden.total"
+              v-if="showIgnored"
+              :api-method="api.getIgnored"
+              v-model:items="store.cache.ignored.items"
+              v-model:total="store.cache.ignored.total"
             ></domain-list>
 
             <v-alert v-else color="grey" variant="outlined">
-              Hidden domains are not shown by default. Show them by clicking the <v-icon icon="mdi-eye" size="small"></v-icon> icon above
+              Ignored domains are not shown by default. Show them by clicking the <v-icon icon="mdi-eye" size="small"></v-icon> icon above
             </v-alert>
           </v-card-text>
         </v-card>
@@ -105,12 +105,12 @@
     setup() {
       const store = useStore();
 
-      const showHidden = ref(false);
+      const showIgnored = ref(false);
 
       return {
         store,
         api,
-        showHidden
+        showIgnored
       };
     }
   };

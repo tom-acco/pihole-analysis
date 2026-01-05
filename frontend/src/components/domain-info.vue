@@ -19,7 +19,7 @@
 
               <v-chip v-if="selectedDomain.flagged" class="mr-2" variant="flat" color="red-darken-2" prepend-icon="mdi-flag" label> Flagged </v-chip>
 
-              <v-chip v-if="selectedDomain.hidden" class="mr-2" variant="flat" color="grey-darken-2" prepend-icon="mdi-eye-off" label> Hidden </v-chip>
+              <v-chip v-if="selectedDomain.ignored" class="mr-2" variant="flat" color="grey-darken-2" prepend-icon="mdi-eye-off" label> Ignored </v-chip>
             </v-col>
 
             <v-col cols="12" sm="6">

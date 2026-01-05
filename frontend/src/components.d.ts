@@ -16,8 +16,6 @@ declare module 'vue' {
     ClientInfo: typeof import('./components/client-info.vue')['default']
     ClientList: typeof import('./components/client-list.vue')['default']
     ClientMenu: typeof import('./components/client-menu.vue')['default']
-    copy: typeof import('./components/domain-actions copy.vue')['default']
-    DashboardActions: typeof import('./components/dashboard-actions.vue')['default']
     DomainActions: typeof import('./components/domain-actions.vue')['default']
     DomainClients: typeof import('./components/domain-clients.vue')['default']
     DomainInfo: typeof import('./components/domain-info.vue')['default']

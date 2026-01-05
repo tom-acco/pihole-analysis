@@ -17,8 +17,8 @@
       <v-list-item :prepend-icon="selectedDomain.flagged ? 'mdi-flag-off' : 'mdi-flag'" @click="store.toggleDomainFlag(selectedDomain)">
         <v-list-item-title>{{ selectedDomain.flagged ? "Unflag" : "Flag" }}</v-list-item-title>
       </v-list-item>
-      <v-list-item :prepend-icon="selectedDomain.hidden ? 'mdi-eye' : 'mdi-eye-off'" @click="store.toggleDomainHide(selectedDomain)">
-        <v-list-item-title>{{ selectedDomain.hidden ? "Show" : "Hide" }}</v-list-item-title>
+      <v-list-item :prepend-icon="selectedDomain.ignored ? 'mdi-eye' : 'mdi-eye-off'" @click="store.toggleDomainIgnore(selectedDomain)">
+        <v-list-item-title>{{ selectedDomain.ignored ? "Unignore" : "Ignore" }}</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
