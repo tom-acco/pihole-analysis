@@ -34,7 +34,7 @@ const api = (database) => {
 
             setTimeout(() => {
                 return res.status(200).send();
-            }, 500)
+            }, 500);
         } catch (err) {
             if (err instanceof SyncControllerException) {
                 return res.status(err.status).send(err.message);
@@ -257,10 +257,21 @@ const api = (database) => {
 
     router.post("/domain/acknowledge", async (req, res) => {
         try {
-            const result = await domainController.toggleAcknowledge(
-                req.body.domain
-            );
-            return res.status(200).send(result);
+            if (req.body.domains instanceof Array) {
+                for (const domain of req.body.domains) {
+                    await domainController.setAcknowledge(
+                        domain,
+                        req.body.value
+                    );
+                }
+            } else {
+                await domainController.setAcknowledge(
+                    req.body.domains,
+                    req.body.value
+                );
+            }
+
+            return res.status(200).send();
         } catch (err) {
             if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);
@@ -273,8 +284,18 @@ const api = (database) => {
 
     router.post("/domain/flag", async (req, res) => {
         try {
-            const result = await domainController.toggleFlag(req.body.domain);
-            return res.status(200).send(result);
+            if (req.body.domains instanceof Array) {
+                for (const domain of req.body.domains) {
+                    await domainController.setFlag(domain, req.body.value);
+                }
+            } else {
+                await domainController.setFlag(
+                    req.body.domains,
+                    req.body.value
+                );
+            }
+
+            return res.status(200).send();
         } catch (err) {
             if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);
@@ -287,8 +308,18 @@ const api = (database) => {
 
     router.post("/domain/ignore", async (req, res) => {
         try {
-            const result = await domainController.toggleIgnore(req.body.domain);
-            return res.status(200).send(result);
+            if (req.body.domains instanceof Array) {
+                for (const domain of req.body.domains) {
+                    await domainController.setIgnore(domain, req.body.value);
+                }
+            } else {
+                await domainController.setIgnore(
+                    req.body.domains,
+                    req.body.value
+                );
+            }
+
+            return res.status(200).send();
         } catch (err) {
             if (err instanceof DomainControllerException) {
                 return res.status(err.status).send(err.message);

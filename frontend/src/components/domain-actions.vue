@@ -14,7 +14,7 @@
               :variant="selectedDomain.acknowledged ? 'elevated' : 'outlined'"
               color="green-darken-2"
               prepend-icon="mdi-check"
-              @click="store.toggleDomainAcknowledge(selectedDomain)"
+              @click="store.setDomainAcknowledge(selectedDomain, true)"
               block
               >Acknowledge</v-btn
             >
@@ -25,7 +25,7 @@
               :variant="selectedDomain.flagged ? 'elevated' : 'outlined'"
               color="red-darken-2"
               prepend-icon="mdi-flag"
-              @click="store.toggleDomainFlag(selectedDomain)"
+              @click="store.setDomainFlag(selectedDomain, !selectedDomain.flagged)"
               block
               >Flag</v-btn
             >
@@ -36,7 +36,7 @@
               :variant="selectedDomain.ignored ? 'elevated' : 'outlined'"
               color="grey-darken-2"
               prepend-icon="mdi-eye-off"
-              @click="store.toggleDomainIgnore(selectedDomain)"
+              @click="store.setDomainIgnore(selectedDomain, !selectedDomain.ignored)"
               block
               >Ignore</v-btn
             >

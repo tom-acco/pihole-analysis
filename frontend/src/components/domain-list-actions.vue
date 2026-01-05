@@ -9,7 +9,7 @@
 
   <v-tooltip text="Acknowledge All">
     <template v-slot:activator="{ props }">
-      <v-chip class="ml-2" v-bind="props" variant="outlined" color="green-darken-2" @click="store.toggleDomainAcknowledge(domains)" label>
+      <v-chip class="ml-2" v-bind="props" variant="outlined" color="green-darken-2" @click="store.setDomainAcknowledge(domains, true)" label>
         <v-icon icon="mdi-check"></v-icon>
       </v-chip>
     </template>

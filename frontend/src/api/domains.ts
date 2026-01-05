@@ -104,9 +104,9 @@ const interrogate = async (domain: string) => {
   }
 };
 
-const acknowledge = async (domain: string) => {
+const setAcknowledge = async (domains: string[], value: boolean) => {
   try {
-    const res = await axios.post("/api/domain/acknowledge", { domain: domain });
+    const res = await axios.post("/api/domain/acknowledge", { domains: domains, value: value });
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -119,9 +119,9 @@ const acknowledge = async (domain: string) => {
   }
 };
 
-const flag = async (domain: string) => {
+const setFlag = async (domains: string[], value: boolean) => {
   try {
-    const res = await axios.post("/api/domain/flag", { domain: domain });
+    const res = await axios.post("/api/domain/flag", { domains: domains, value: value });
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -134,9 +134,9 @@ const flag = async (domain: string) => {
   }
 };
 
-const ignore = async (domain: string) => {
+const setIgnore = async (domains: string[], value: boolean) => {
   try {
-    const res = await axios.post("/api/domain/ignore", { domain: domain });
+    const res = await axios.post("/api/domain/ignore", { domains: domains, value: value });
     return res.data;
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -156,7 +156,7 @@ export default {
   getIgnored: getIgnored,
   getDomain: getDomain,
   interrogate: interrogate,
-  acknowledge: acknowledge,
-  flag: flag,
-  ignore: ignore
+  setAcknowledge: setAcknowledge,
+  setFlag: setFlag,
+  setIgnore: setIgnore
 };

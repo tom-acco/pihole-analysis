@@ -11,13 +11,13 @@
       <v-list-item prepend-icon="mdi-search-web" @click="store.interrogateDomain(selectedDomain)">
         <v-list-item-title>Interrogate</v-list-item-title>
       </v-list-item>
-      <v-list-item prepend-icon="mdi-check" @click="store.toggleDomainAcknowledge(selectedDomain)">
+      <v-list-item prepend-icon="mdi-check" @click="store.setDomainAcknowledge(selectedDomain, true)">
         <v-list-item-title>Acknowledge</v-list-item-title>
       </v-list-item>
-      <v-list-item :prepend-icon="selectedDomain.flagged ? 'mdi-flag-off' : 'mdi-flag'" @click="store.toggleDomainFlag(selectedDomain)">
+      <v-list-item :prepend-icon="selectedDomain.flagged ? 'mdi-flag-off' : 'mdi-flag'" @click="store.setDomainFlag(selectedDomain, !selectedDomain.flagged)">
         <v-list-item-title>{{ selectedDomain.flagged ? "Unflag" : "Flag" }}</v-list-item-title>
       </v-list-item>
-      <v-list-item :prepend-icon="selectedDomain.ignored ? 'mdi-eye' : 'mdi-eye-off'" @click="store.toggleDomainIgnore(selectedDomain)">
+      <v-list-item :prepend-icon="selectedDomain.ignored ? 'mdi-eye' : 'mdi-eye-off'" @click="store.setDomainIgnore(selectedDomain, !selectedDomain.ignored)">
         <v-list-item-title>{{ selectedDomain.ignored ? "Unignore" : "Ignore" }}</v-list-item-title>
       </v-list-item>
     </v-list>

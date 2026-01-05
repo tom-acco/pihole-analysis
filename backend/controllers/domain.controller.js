@@ -113,7 +113,7 @@ module.exports = class DomainController {
         return result;
     }
 
-    async toggleAcknowledge(domain) {
+    async setAcknowledge(domain, value) {
         const result = await this.domainService.getByDomain(domain);
 
         if (result === null) {
@@ -121,13 +121,13 @@ module.exports = class DomainController {
         }
 
         await result.update({
-            acknowledged: !result.acknowledged
+            acknowledged: value
         });
 
         return result;
     }
 
-    async toggleFlag(domain) {
+    async setFlag(domain, value) {
         const result = await this.domainService.getByDomain(domain);
 
         if (result === null) {
@@ -135,13 +135,13 @@ module.exports = class DomainController {
         }
 
         await result.update({
-            flagged: !result.flagged
+            flagged: value
         });
 
         return result;
     }
 
-    async toggleIgnore(domain) {
+    async setIgnore(domain, value) {
         const result = await this.domainService.getByDomain(domain);
 
         if (result === null) {
@@ -149,7 +149,7 @@ module.exports = class DomainController {
         }
 
         await result.update({
-            ignored: !result.ignored
+            ignored: value
         });
 
         return result;

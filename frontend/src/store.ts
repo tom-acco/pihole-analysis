@@ -92,40 +92,46 @@ export const useStore = defineStore("store", {
       }
     },
 
-    async toggleDomainAcknowledge(domain: Domain | Domain[]) {
+    async setDomainAcknowledge(domain: Domain | Domain[], value: boolean) {
       const domains = Array.isArray(domain) ? domain : [domain];
 
       try {
-        for (const item of domains) {
-          const result = await domainApi.acknowledge(item.domain);
-          item.acknowledged = result.acknowledged;
-        }
-
-        toast.success(`Domain acknowledged`);
+        await domainApi.setAcknowledge(
+          domains.map((o) => o.domain),
+          value
+        );
+        domains.map((o) => (o.acknowledged = value));
+        toast.success(`${value ? "Acknowledged" : "Unacknowledged"}.`);
       } catch (err) {
         toast.error(err);
       }
     },
 
-    async toggleDomainFlag(domain: Domain) {
+    async setDomainFlag(domain: Domain | Domain[], value: boolean) {
+      const domains = Array.isArray(domain) ? domain : [domain];
+
       try {
-        const result = await domainApi.flag(domain.domain);
-
-        toast.success(`Domain ${result.flagged ? "flagged" : "unflagged"}.`);
-
-        domain.flagged = result.flagged;
+        await domainApi.setFlag(
+          domains.map((o) => o.domain),
+          value
+        );
+        domains.map((o) => (o.flagged = value));
+        toast.success(`${value ? "Flagged" : "Unflagged"}.`);
       } catch (err) {
         toast.error(err);
       }
     },
 
-    async toggleDomainIgnore(domain: Domain) {
+    async setDomainIgnore(domain: Domain | Domain[], value: boolean) {
+      const domains = Array.isArray(domain) ? domain : [domain];
+
       try {
-        const result = await domainApi.ignore(domain.domain);
-
-        toast.success(`Domain ${result.ignored ? "ignored" : "unignored"}.`);
-
-        domain.ignored = result.ignored;
+        await domainApi.setIgnore(
+          domains.map((o) => o.domain),
+          value
+        );
+        domains.map((o) => (o.ignored = value));
+        toast.success(`${value ? "Ignored" : "Unignored"}.`);
       } catch (err) {
         toast.error(err);
       }
