@@ -5,13 +5,16 @@ import { toast } from "vue3-toastify";
 import domainApi from "@/api/domains";
 import syncApi from "@/api/sync";
 
-import type { Client, Domain } from "./interfaces";
+import type { Client, Domain, Sync } from "./interfaces";
 
 export const useStore = defineStore("store", {
   state: () => ({
     syncKey: 0,
     debounceMs: 500,
     cache: {
+      syncs: {
+        items: [] as Sync[]
+      },
       clients: {
         total: 0 as number,
         items: [] as Client[]
