@@ -52,19 +52,32 @@ module.exports = class SyncController {
     }
 
     async syncNow() {
+        // Check for running sync
         const lastSync = await this.getLast();
-
         if (lastSync && lastSync.status === 1) {
             return;
         }
 
+        // Download the encrypted file
         const ct = await downloadFile(
             `${this.piHoleURL}:${this.piHoleDumpPort}/data`
         );
 
+        // Decrypt the file
         const pt = decryptFile(ct, this.piHoleDumpKey);
 
+        // Parse the file
         const data = JSON.parse(pt);
+
+        // Find the starting point from the last query id
+        let startIndex = 0;
+        const lastQuery = await this.queryController.getLast(1);        
+        if(lastQuery){
+            const i = data.findIndex(item => item.id === lastQuery.piHoleId);
+            if(i !== -1){
+                startIndex = i;
+            }
+        }
 
         const syncLog = await this.log({
             startTime: new Date(),
@@ -76,7 +89,7 @@ module.exports = class SyncController {
         });
 
         try {
-            for (const item of data) {
+            for (const item of data.slice(startIndex)) {
                 const [client, isNewClient] =
                     await this.clientController.createIfNotExist(item.client);
                 const [domain, isNewDomain] =

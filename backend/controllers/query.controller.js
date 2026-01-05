@@ -13,6 +13,16 @@ module.exports = class QueryController {
         this.queryService = new QueryService(this.database);
     }
 
+    async getLast() {
+        const result = await this.queryService.getWithLimit(1);
+
+        if (result === null) {
+            return null;
+        }
+
+        return result[0];
+    }
+
     async createIfNotExist(client, domain, query) {
         const existing = await this.queryService.getByPiHoleId(
             query.piHoleId
