@@ -7,37 +7,6 @@ const setupDatabase = async () => {
         logging: (msg) => console.log(msg)
     });
 
-    const Client = sequelize.define("Client", {
-        ipaddress: DataTypes.STRING,
-        alias: DataTypes.STRING,
-        comment: DataTypes.TEXT
-    });
-
-    const Domain = sequelize.define("Domain", {
-        domain: DataTypes.STRING,
-        owner: DataTypes.STRING,
-        category: DataTypes.STRING,
-        risk: DataTypes.NUMBER,
-        comment: DataTypes.TEXT,
-        acknowledged: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
-        flagged: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        },
-        ignored: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: false
-        }
-    });
-
-    const Query = sequelize.define("Query", {
-        piHoleId: DataTypes.NUMBER,
-        timestamp: DataTypes.DATE
-    });
-
     const Sync = sequelize.define("Sync", {
         startTime: DataTypes.DATE,
         endTime: DataTypes.DATE,
@@ -46,6 +15,75 @@ const setupDatabase = async () => {
         domains: DataTypes.NUMBER,
         queries: DataTypes.NUMBER
     });
+
+    const Client = sequelize.define(
+        "Client",
+        {
+            ipaddress: DataTypes.STRING,
+            alias: DataTypes.STRING,
+            comment: DataTypes.TEXT
+        },
+        {
+            indexes: [{ unique: true, fields: ["ipaddress"] }]
+        }
+    );
+
+    const Domain = sequelize.define(
+        "Domain",
+        {
+            domain: DataTypes.STRING,
+            owner: DataTypes.STRING,
+            category: DataTypes.STRING,
+            risk: DataTypes.NUMBER,
+            comment: DataTypes.TEXT,
+            acknowledged: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
+            flagged: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            },
+            ignored: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false
+            }
+        },
+        {
+            indexes: [
+                { unique: true, fields: ["domain"] },
+                {
+                    unique: false,
+                    fields: ["acknowledged"]
+                },
+                {
+                    unique: false,
+                    fields: ["flagged"]
+                },
+                {
+                    unique: false,
+                    fields: ["ignored"]
+                }
+            ]
+        }
+    );
+
+    const Query = sequelize.define(
+        "Query",
+        {
+            piHoleId: DataTypes.NUMBER,
+            timestamp: DataTypes.DATE,
+            ClientId: DataTypes.INTEGER,
+            DomainId: DataTypes.INTEGER
+        },
+        {
+            indexes: [
+                { unique: true, fields: ["piHoleId"] },
+                { unique: false, fields: ["ClientId"] },
+                { unique: false, fields: ["DomainId"] }
+            ]
+        }
+    );
 
     Client.belongsToMany(Domain, { through: "ClientDomains" });
     Client.hasMany(Query);
