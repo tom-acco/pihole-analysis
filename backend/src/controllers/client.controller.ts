@@ -10,7 +10,7 @@ import type {
 import { Client } from "../models/client.model.js";
 
 import { ClientService } from "../service/client.service.js";
-import { ClientControllerException } from "../classes/Exceptions.js";
+import { ClientControllerException } from "../utils/exceptions.js";
 
 export class ClientController {
     private clientService: ClientService;

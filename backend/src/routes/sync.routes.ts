@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
 
 import { SyncController } from "../controllers/sync.controller.js";
-import { SyncControllerException } from "../classes/Exceptions.js";
+import { SyncControllerException } from "../utils/exceptions.js";
 
 export const syncRouter = (): Router => {
     const router = Router();

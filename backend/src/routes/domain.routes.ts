@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
 
 import { DomainController } from "../controllers/domain.controller.js";
-import { DomainControllerException } from "../classes/Exceptions.js";
+import { DomainControllerException } from "../utils/exceptions.js";
 
 import { parsePagination } from "../utils/routes.js";
 

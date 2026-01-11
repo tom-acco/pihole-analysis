@@ -7,7 +7,7 @@ import { QueryController } from "../controllers/query.controller.js";
 import { Sync } from "../models/sync.model.js";
 
 import { SyncService } from "../service/sync.service.js";
-import { SyncControllerException } from "../classes/Exceptions.js";
+import { SyncControllerException } from "../utils/exceptions.js";
 
 import type { PiHoleItem, SyncLogInput } from "../interfaces/sync.js";
 

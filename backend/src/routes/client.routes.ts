@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
 
 import { ClientController } from "../controllers/client.controller.js";
-import { ClientControllerException } from "../classes/Exceptions.js";
+import { ClientControllerException } from "../utils/exceptions.js";
 
 import { parsePagination } from "../utils/routes.js";
 

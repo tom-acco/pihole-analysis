@@ -1,7 +1,7 @@
 import { Query } from "../models/query.model.js";
 
 import { QueryService } from "../service/query.service.js";
-import { QueryControllerException } from "../classes/Exceptions.js";
+import { QueryControllerException } from "../utils/exceptions.js";
 
 export class QueryController {
     private queryService: QueryService;

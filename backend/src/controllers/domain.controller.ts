@@ -10,7 +10,7 @@ import type {
 import { Domain } from "../models/domain.model.js";
 
 import { DomainService } from "../service/domain.service.js";
-import { DomainControllerException } from "../classes/Exceptions.js";
+import { DomainControllerException } from "../utils/exceptions.js";
 
 import { aiAnalysis } from "../utils/ai.js";
 
