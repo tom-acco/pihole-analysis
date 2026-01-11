@@ -23,10 +23,7 @@ export class DomainService {
     /**
      * Get domains with total count, optional filters/pagination
      */
-    async getAllWithCount(
-        showDeleted?: boolean,
-        options?: FindOptions
-    ) {
+    async getAllWithCount(showDeleted?: boolean, options?: FindOptions) {
         const results = await Domain.findAndCountAll({
             ...options,
             attributes: [

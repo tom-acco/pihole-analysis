@@ -1,3 +1,4 @@
+import path from "path";
 import qs from "qs";
 import express from "express";
 import session from "express-session";
@@ -31,8 +32,14 @@ export const startWeb = async (): Promise<Server> => {
     app.use("/api", apiRouter() as RequestHandler);
 
     // Serve static files
-    app.use("/", express.static("./www"));
-    app.use("/*splat", express.static("./www"));
+    app.use(
+        "/",
+        express.static(`${path.join(process.env.INIT_CWD ?? "./", "www")}`)
+    );
+    app.use(
+        "/*splat",
+        express.static(`${path.join(process.env.INIT_CWD ?? "./", "www")}`)
+    );
 
     // Start server
     const port = Number(process.env.WEB_PORT ?? 8000);

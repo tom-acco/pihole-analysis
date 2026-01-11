@@ -1,5 +1,7 @@
+import path from "path";
+
 import dotenv from "dotenv";
-dotenv.config({path: "../.env"});
+dotenv.config({ path: `${path.join(process.env.INIT_CWD ?? "./", ".env")}` });
 
 import { setupDatabase } from "./utils/database.js";
 import { startWeb } from "./utils/web.js";

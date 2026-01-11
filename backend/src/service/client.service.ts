@@ -22,10 +22,7 @@ export class ClientService {
     /**
      * Get clients with total count, optional filters/pagination
      */
-    async getAllWithCount(
-        showDeleted?: boolean,
-        options?: FindOptions
-    ) {
+    async getAllWithCount(showDeleted?: boolean, options?: FindOptions) {
         const results = await Client.findAndCountAll({
             ...options,
             paranoid: showDeleted ? false : true,

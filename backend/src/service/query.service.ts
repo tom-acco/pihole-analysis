@@ -19,10 +19,7 @@ export class QueryService {
     /**
      * Get a query by Pi-hole ID
      */
-    async getByPiHoleId(
-        piHoleId: number,
-        showDeleted?: boolean
-    ) {
+    async getByPiHoleId(piHoleId: number, showDeleted?: boolean) {
         const result = await Query.findOne({
             where: { piHoleId },
             paranoid: showDeleted ? false : true
@@ -34,7 +31,12 @@ export class QueryService {
     /**
      * Create a new query
      */
-    async create(piHoleId: number, timestamp: Date, ClientId: number, DomainId: number) {
+    async create(
+        piHoleId: number,
+        timestamp: Date,
+        ClientId: number,
+        DomainId: number
+    ) {
         const result = await Query.create({
             piHoleId,
             timestamp,
