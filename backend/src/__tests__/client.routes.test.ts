@@ -192,20 +192,42 @@ describe("Client Routes", () => {
         });
     });
 
-    describe("POST /api/client/alias", () => {
-        it("should return 400 when alias is missing", async () => {
+    describe("PUT /api/client/alias", () => {
+        it("should return 400 when id is invalid", async () => {
             const response = await request(app)
-                .post("/api/client/alias")
-                .send({ ipaddress: "192.168.1.1" });
+                .put("/api/client/alias")
+                .send({ id: "invalid", alias: "Test" });
+
+            expect(response.status).toBe(400);
+            expect(response.text).toBe("Invalid id: must be a positive number");
+        });
+
+        it("should return 400 when id is negative", async () => {
+            const response = await request(app)
+                .put("/api/client/alias")
+                .send({ id: -1, alias: "Test" });
+
+            expect(response.status).toBe(400);
+            expect(response.text).toBe("Invalid id: must be a positive number");
+        });
+
+        it("should return 400 when alias is missing", async () => {
+            const client = await Client.create({ ipaddress: "192.168.1.1" });
+
+            const response = await request(app)
+                .put(`/api/client/alias`)
+                .send({ id: client.id });
 
             expect(response.status).toBe(400);
             expect(response.text).toBe("Missing alias in request body");
         });
 
         it("should return 400 when alias is not a string", async () => {
+            const client = await Client.create({ ipaddress: "192.168.1.1" });
+
             const response = await request(app)
-                .post("/api/client/alias")
-                .send({ ipaddress: "192.168.1.1", alias: 123 });
+                .put(`/api/client/alias`)
+                .send({ id: client.id, alias: 123 });
 
             expect(response.status).toBe(400);
             expect(response.text).toBe("Alias must be a string");
@@ -213,47 +235,47 @@ describe("Client Routes", () => {
 
         it("should return 400 when client does not exist", async () => {
             const response = await request(app)
-                .post("/api/client/alias")
-                .send({ ipaddress: "10.0.0.1", alias: "Test" });
+                .put("/api/client/alias")
+                .send({ id: 999, alias: "Test" });
 
             expect(response.status).toBe(400);
             expect(response.text).toContain("does not exist");
         });
 
         it("should set alias on client", async () => {
-            await Client.create({ ipaddress: "192.168.1.1" });
+            const client = await Client.create({ ipaddress: "192.168.1.1" });
 
             const response = await request(app)
-                .post("/api/client/alias")
-                .send({ ipaddress: "192.168.1.1", alias: "Home PC" });
+                .put(`/api/client/alias`)
+                .send({ id: client.id, alias: "Home PC" });
 
             expect(response.status).toBe(200);
             expect(response.body.alias).toBe("Home PC");
         });
 
         it("should update existing alias", async () => {
-            await Client.create({
+            const client = await Client.create({
                 ipaddress: "192.168.1.1",
                 alias: "Old Alias"
             });
 
             const response = await request(app)
-                .post("/api/client/alias")
-                .send({ ipaddress: "192.168.1.1", alias: "New Alias" });
+                .put(`/api/client/alias`)
+                .send({ id: client.id, alias: "New Alias" });
 
             expect(response.status).toBe(200);
             expect(response.body.alias).toBe("New Alias");
         });
 
         it("should allow empty string alias", async () => {
-            await Client.create({
+            const client = await Client.create({
                 ipaddress: "192.168.1.1",
                 alias: "Old Alias"
             });
 
             const response = await request(app)
-                .post("/api/client/alias")
-                .send({ ipaddress: "192.168.1.1", alias: "" });
+                .put(`/api/client/alias`)
+                .send({ id: client.id, alias: "" });
 
             expect(response.status).toBe(200);
             expect(response.body.alias).toBe("");

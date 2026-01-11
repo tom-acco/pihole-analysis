@@ -111,6 +111,59 @@ describe("Validation Middleware", () => {
             expect(statusCalled).toBe(400);
             expect(nextCalled).toBe(false);
         });
+
+        it("should pass validation with valid numeric id in body", () => {
+            mockReq.body = { id: 123 };
+            const middleware = validateId("body");
+
+            middleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(nextCalled).toBe(true);
+            expect(statusCalled).toBeNull();
+        });
+
+        it("should pass validation with valid string id in body", () => {
+            mockReq.body = { id: "456" };
+            const middleware = validateId("body");
+
+            middleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(nextCalled).toBe(true);
+            expect(statusCalled).toBeNull();
+        });
+
+        it("should return 400 when id is missing from body", () => {
+            mockReq.body = {};
+            const middleware = validateId("body");
+
+            middleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(statusCalled).toBe(400);
+            expect(sendCalled).toBe("Missing id parameter");
+            expect(nextCalled).toBe(false);
+        });
+
+        it("should return 400 when id in body is not a number", () => {
+            mockReq.body = { id: "invalid" };
+            const middleware = validateId("body");
+
+            middleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(statusCalled).toBe(400);
+            expect(sendCalled).toBe("Invalid id: must be a positive number");
+            expect(nextCalled).toBe(false);
+        });
+
+        it("should return 400 when id in body is negative", () => {
+            mockReq.body = { id: -1 };
+            const middleware = validateId("body");
+
+            middleware(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(statusCalled).toBe(400);
+            expect(sendCalled).toBe("Invalid id: must be a positive number");
+            expect(nextCalled).toBe(false);
+        });
     });
 
     describe("validateDomain", () => {

@@ -51,7 +51,8 @@ describe("Controller Layer", () => {
                 await Client.create({ ipaddress: "192.168.1.1" });
                 await Client.create({ ipaddress: "10.0.0.1" });
 
-                const result = await clientController.getAllPaginated("192.168");
+                const result =
+                    await clientController.getAllPaginated("192.168");
 
                 expect(result.count).toBe(1);
                 expect(result.rows).toHaveLength(1);
@@ -197,12 +198,12 @@ describe("Controller Layer", () => {
 
         describe("setAlias", () => {
             it("should set alias on client", async () => {
-                await Client.create({
+                const client = await Client.create({
                     ipaddress: "192.168.1.1"
                 });
 
                 const result = await clientController.setAlias(
-                    "192.168.1.1",
+                    client.id,
                     "Home PC"
                 );
 
@@ -210,13 +211,13 @@ describe("Controller Layer", () => {
             });
 
             it("should update existing alias", async () => {
-                await Client.create({
+                const client = await Client.create({
                     ipaddress: "192.168.1.1",
                     alias: "Old Alias"
                 });
 
                 const result = await clientController.setAlias(
-                    "192.168.1.1",
+                    client.id,
                     "New Alias"
                 );
 
@@ -225,7 +226,7 @@ describe("Controller Layer", () => {
 
             it("should throw exception when client not found", async () => {
                 await expect(
-                    clientController.setAlias("10.0.0.1", "Test")
+                    clientController.setAlias(999, "Test")
                 ).rejects.toThrow(ClientControllerException);
             });
         });
@@ -271,8 +272,7 @@ describe("Controller Layer", () => {
                     category: "Shopping"
                 });
 
-                const result =
-                    await domainController.getAllPaginated("Social");
+                const result = await domainController.getAllPaginated("Social");
 
                 expect(result.count).toBe(1);
                 expect(result.rows).toHaveLength(1);

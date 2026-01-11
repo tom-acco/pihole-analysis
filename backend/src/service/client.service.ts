@@ -47,6 +47,11 @@ export class ClientService {
         return result;
     }
 
+    async getById(id: string | number): Promise<Client | null> {
+        const result = await Client.findByPk(id);
+        return result;
+    }
+
     async getByIP(ipaddress: string): Promise<Client | null> {
         const result = await Client.findOne({
             where: { ipaddress }

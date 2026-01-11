@@ -90,8 +90,8 @@ export class ClientController {
         return [result, true] as const;
     }
 
-    async setAlias(ipaddress: string, alias: string): Promise<Client> {
-        const result = await this.clientService.getByIP(ipaddress);
+    async setAlias(id: string | number, alias: string): Promise<Client> {
+        const result = await this.clientService.getById(id);
 
         if (!result) {
             throw new ClientControllerException(

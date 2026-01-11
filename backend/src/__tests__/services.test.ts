@@ -159,6 +159,24 @@ describe("Service Layer", () => {
                 expect(found).not.toBeNull();
             });
         });
+
+        describe("getById", () => {
+            it("should return null when client not found", async () => {
+                const result = await clientService.getById(999);
+                expect(result).toBeNull();
+            });
+
+            it("should return client by ID", async () => {
+                const client = await Client.create({
+                    ipaddress: "192.168.1.1"
+                });
+
+                const result = await clientService.getById(client.id);
+
+                expect(result).not.toBeNull();
+                expect(result?.id).toBe(client.id);
+            });
+        });
     });
 
     describe("DomainService", () => {

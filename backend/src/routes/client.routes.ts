@@ -40,14 +40,14 @@ export const clientRouter = (): Router => {
         }, "getting client")
     );
 
-    router.post(
+    router.put(
         "/client/alias",
+        validateId("body"),
         validateAlias,
         asyncHandler(async (req, res) => {
-            const result = await clientController.setAlias(
-                req.body.ipaddress,
-                req.body.alias
-            );
+            const { id, alias } = req.body;
+
+            const result = await clientController.setAlias(id, alias);
 
             return res.status(200).json(result);
         }, "setting client alias")

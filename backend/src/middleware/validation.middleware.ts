@@ -2,20 +2,25 @@ import type { Request, Response, NextFunction } from "express";
 
 /**
  * Validates that a numeric ID exists in the request and is valid
- * @param source - Where to find the ID: "query" or "params"
+ * @param source - Where to find the ID: "query", "params", or "body"
  */
-export const validateId = (source: "query" | "params" = "query") => {
+export const validateId = (source: "query" | "params" | "body" = "query") => {
     return (req: Request, res: Response, next: NextFunction) => {
-        const idStr =
-            source === "query"
-                ? (req.query.id as string)
-                : (req.params.id as string);
+        let idValue: string | number | undefined;
 
-        if (!idStr) {
+        if (source === "query") {
+            idValue = req.query.id as string;
+        } else if (source === "params") {
+            idValue = req.params.id as string;
+        } else {
+            idValue = req.body.id;
+        }
+
+        if (idValue === undefined || idValue === null || idValue === "") {
             return res.status(400).send("Missing id parameter");
         }
 
-        const id = parseInt(idStr);
+        const id = typeof idValue === "number" ? idValue : parseInt(idValue);
 
         if (isNaN(id) || id <= 0) {
             return res
