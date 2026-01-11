@@ -42,11 +42,15 @@ export const validateBulkDomainsFormat = (
     res: Response,
     next: NextFunction
 ) => {
+    if (!req.body.domains) {
+        return res.status(400).send("No domains provided for validation");
+    }
+
     const domains = Array.isArray(req.body.domains)
         ? req.body.domains
         : [req.body.domains];
 
-    if (!domains || domains.length === 0) {
+    if (domains.length === 0) {
         return res.status(400).send("No domains provided for validation");
     }
 
