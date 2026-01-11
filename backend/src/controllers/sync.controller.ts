@@ -7,7 +7,6 @@ import { QueryController } from "../controllers/query.controller.js";
 import { Sync } from "../models/sync.model.js";
 
 import { SyncService } from "../service/sync.service.js";
-import { SyncControllerException } from "../utils/exceptions.js";
 
 import type { PiHoleItem, SyncLogInput } from "../interfaces/sync.js";
 
@@ -100,7 +99,7 @@ export class SyncController {
                 await client.addDomain(domain);
 
                 // Create or get query
-                const [query, isNewQuery] =
+                const [_query, isNewQuery] =
                     await this.queryController.createIfNotExist(
                         client.id,
                         domain.id,

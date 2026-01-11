@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize";
 import { Client, initClientModel } from "./models/client.model.js";
 import { Domain, initDomainModel } from "./models/domain.model.js";
 import { Query, initQueryModel } from "./models/query.model.js";
-import { Sync, initSyncModel } from "./models/sync.model.js";
+import { initSyncModel } from "./models/sync.model.js";
 
 export const setupDatabase = async (): Promise<Sequelize> => {
     const sequelize = new Sequelize({
