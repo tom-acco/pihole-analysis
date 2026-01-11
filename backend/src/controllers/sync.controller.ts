@@ -100,8 +100,8 @@ export class SyncController {
                 // Create or get query
                 const [query, isNewQuery] =
                     await this.queryController.createIfNotExist(
-                        client.id, // pass client ID
-                        domain.id, // pass domain ID
+                        client.id,
+                        domain.id,
                         {
                             piHoleId: item.id,
                             timestamp: new Date(item.timestamp * 1000)

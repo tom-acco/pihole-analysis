@@ -1,5 +1,3 @@
-// exceptions.ts
-
 export class ClientControllerException extends Error {
     status: number;
 

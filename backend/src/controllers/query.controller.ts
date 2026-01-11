@@ -29,7 +29,6 @@ export class QueryController {
             return [existing, false] as const;
         }
 
-        // Pass ClientId and DomainId directly
         const result = await this.queryService.create(
             query.piHoleId,
             query.timestamp,

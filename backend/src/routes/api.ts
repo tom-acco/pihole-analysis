@@ -48,7 +48,6 @@ export const apiRouter = () => {
     const domainController = new DomainController();
     const syncController = new SyncController();
 
-    // ---- Sync routes ----
     router.get("/sync", async (req: Request, res: Response) => {
         try {
             const result = await syncController.getLast100();
@@ -80,7 +79,6 @@ export const apiRouter = () => {
         }
     });
 
-    // ---- Client routes ----
     router.get("/clients", async (req: Request, res: Response) => {
         try {
             const { search, page, itemsPerPage, sortBy } = parsePagination(req);
@@ -123,7 +121,6 @@ export const apiRouter = () => {
         }
     });
 
-    // ---- Domain routes ----
     router.get("/domains", async (req: Request, res: Response) => {
         try {
             const { search, page, itemsPerPage, sortBy } = parsePagination(req);
