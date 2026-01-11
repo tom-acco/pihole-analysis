@@ -1,7 +1,6 @@
 import type { FindOptions } from "sequelize";
 
 import type { PaginatedResult } from "../interfaces/common.js";
-
 import { Client } from "../models/client.model.js";
 import { Domain } from "../models/domain.model.js";
 import { Query } from "../models/query.model.js";

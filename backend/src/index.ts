@@ -1,12 +1,11 @@
+import dotenv from "dotenv";
 import path from "path";
 
-import dotenv from "dotenv";
 dotenv.config({ path: `${path.join(process.env.INIT_CWD ?? "./", ".env")}` });
 
+import { SyncController } from "./controllers/sync.controller.js";
 import { setupDatabase } from "./database.js";
 import { startWeb } from "./web.js";
-
-import { SyncController } from "./controllers/sync.controller.js";
 
 async function run() {
     await setupDatabase();

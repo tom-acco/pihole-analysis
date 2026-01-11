@@ -1,15 +1,14 @@
 import { Router } from "express";
 
 import { DomainController } from "../controllers/domain.controller.js";
-
-import { parsePagination } from "../utils/routes.js";
 import { asyncHandler } from "../middleware/error-handler.middleware.js";
+import { validateDomainFormat } from "../middleware/domain-validator.middleware.js";
 import {
     validateId,
     validateDomain,
     validateBulkDomainUpdate
 } from "../middleware/validation.middleware.js";
-import { validateDomainFormat } from "../middleware/domain-validator.middleware.js";
+import { parsePagination } from "../utils/routes.js";
 
 export const domainRouter = (): Router => {
     const router = Router();

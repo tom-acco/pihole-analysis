@@ -6,13 +6,10 @@ import type {
     PaginatedAttributes,
     PaginatedResult
 } from "../interfaces/common.js";
-
 import { Domain } from "../models/domain.model.js";
-
 import { DomainService } from "../service/domain.service.js";
-import { DomainControllerException } from "../utils/exceptions.js";
-
 import { aiAnalysis } from "../utils/ai.js";
+import { DomainControllerException } from "../utils/exceptions.js";
 
 export class DomainController {
     private domainService: DomainService;

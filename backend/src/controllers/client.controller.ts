@@ -6,9 +6,7 @@ import type {
     PaginatedAttributes,
     PaginatedResult
 } from "../interfaces/common.js";
-
 import { Client } from "../models/client.model.js";
-
 import { ClientService } from "../service/client.service.js";
 import { ClientControllerException } from "../utils/exceptions.js";
 

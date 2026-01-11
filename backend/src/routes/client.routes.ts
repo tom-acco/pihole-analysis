@@ -1,13 +1,12 @@
 import { Router } from "express";
 
 import { ClientController } from "../controllers/client.controller.js";
-
-import { parsePagination } from "../utils/routes.js";
 import { asyncHandler } from "../middleware/error-handler.middleware.js";
 import {
     validateId,
     validateAlias
 } from "../middleware/validation.middleware.js";
+import { parsePagination } from "../utils/routes.js";
 
 export const clientRouter = (): Router => {
     const router = Router();

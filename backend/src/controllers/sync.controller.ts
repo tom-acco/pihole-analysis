@@ -1,17 +1,13 @@
 import schedule from "node-schedule";
 
+import type { PiHoleItem, SyncLogInput } from "../interfaces/sync.js";
 import { ClientController } from "../controllers/client.controller.js";
 import { DomainController } from "../controllers/domain.controller.js";
 import { QueryController } from "../controllers/query.controller.js";
-
 import { Sync } from "../models/sync.model.js";
-
 import { SyncService } from "../service/sync.service.js";
-
-import type { PiHoleItem, SyncLogInput } from "../interfaces/sync.js";
-
-import { downloadFile } from "../utils/download.js";
 import { decryptFile } from "../utils/decrypt.js";
+import { downloadFile } from "../utils/download.js";
 
 export class SyncController {
     private piHoleURL: string;

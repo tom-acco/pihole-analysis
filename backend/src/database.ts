@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+
 import { Client, initClientModel } from "./models/client.model.js";
 import { Domain, initDomainModel } from "./models/domain.model.js";
 import { Query, initQueryModel } from "./models/query.model.js";
