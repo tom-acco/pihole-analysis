@@ -3,10 +3,7 @@ import { Sync } from "../models/sync.model.js";
 export class SyncService {
     constructor() {}
 
-    /**
-     * Get the last `limit` sync logs
-     */
-    async getWithLimit(limit: number, showDeleted?: boolean) {
+    async getWithLimit(limit: number, showDeleted?: boolean): Promise<Sync[]> {
         const results = await Sync.findAll({
             limit,
             order: [["id", "DESC"]],
@@ -16,9 +13,6 @@ export class SyncService {
         return results;
     }
 
-    /**
-     * Create a new sync log
-     */
     async create(syncLog: {
         startTime: Date;
         endTime?: Date | null;
@@ -26,7 +20,7 @@ export class SyncService {
         clients: number | null;
         domains: number | null;
         queries: number | null;
-    }) {
+    }): Promise<Sync> {
         const result = await Sync.create({
             startTime: syncLog.startTime,
             endTime: syncLog.endTime ?? null,
@@ -39,10 +33,7 @@ export class SyncService {
         return result;
     }
 
-    /**
-     * End all stale sync logs (status = 1)
-     */
-    async endStale() {
+    async endStale(): Promise<void> {
         await Sync.update(
             { status: 3, endTime: new Date() },
             {

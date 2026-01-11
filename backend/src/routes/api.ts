@@ -41,7 +41,7 @@ const parsePagination = (req: Request) => {
     return { search, page, itemsPerPage, sortBy };
 };
 
-export const apiRouter = () => {
+export const apiRouter = (): Router => {
     const router = Router();
 
     const clientController = new ClientController();

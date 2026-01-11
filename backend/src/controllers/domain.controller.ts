@@ -21,16 +21,13 @@ export class DomainController {
         this.domainService = new DomainService();
     }
 
-    /**
-     * Get all domains paginated, optionally filtered and sorted
-     */
     async getAllPaginated(
         filter?: string | null,
         page?: number,
         perPage?: number,
         sortBy?: SortItem[],
         attributes?: PaginatedAttributes
-    ): Promise<PaginatedResult<any>> {
+    ): Promise<PaginatedResult<Domain>> {
         const searchOptions: FindOptions = {};
 
         searchOptions.where = {
@@ -81,10 +78,7 @@ export class DomainController {
         return results;
     }
 
-    /**
-     * Get domain and associated clients by ID
-     */
-    async getDomainClients(id: number) {
+    async getDomainClients(id: number): Promise<Domain | null> {
         const domain = await this.domainService.getDetail(id);
 
         if (!domain) {
@@ -97,9 +91,6 @@ export class DomainController {
         return domain;
     }
 
-    /**
-     * Create a domain if it doesn't already exist
-     */
     async createIfNotExist(domain: string): Promise<[Domain, boolean]> {
         const existing = await this.domainService.getByDomain(domain);
 
@@ -109,10 +100,7 @@ export class DomainController {
         return [result, true];
     }
 
-    /**
-     * Run AI analysis on a domain
-     */
-    async interrogate(domain: string) {
+    async interrogate(domain: string): Promise<Domain> {
         const result = await this.domainService.getByDomain(domain);
 
         if (!result) {
@@ -139,42 +127,39 @@ export class DomainController {
         return result;
     }
 
-    /**
-     * Update domain acknowledged status
-     */
-    async setAcknowledge(domain: string, value: boolean) {
+    async setAcknowledge(domain: string, value: boolean): Promise<Domain> {
         const result = await this.domainService.getByDomain(domain);
 
-        if (!result)
+        if (!result) {
             throw new DomainControllerException(`Domain does not exist!`, 400);
+        }
 
         await result.update({ acknowledged: value });
+
         return result;
     }
 
-    /**
-     * Update domain flagged status
-     */
-    async setFlag(domain: string, value: boolean) {
+    async setFlag(domain: string, value: boolean): Promise<Domain> {
         const result = await this.domainService.getByDomain(domain);
 
-        if (!result)
+        if (!result) {
             throw new DomainControllerException(`Domain does not exist!`, 400);
+        }
 
         await result.update({ flagged: value });
+
         return result;
     }
 
-    /**
-     * Update domain ignored status
-     */
-    async setIgnore(domain: string, value: boolean) {
+    async setIgnore(domain: string, value: boolean): Promise<Domain> {
         const result = await this.domainService.getByDomain(domain);
 
-        if (!result)
+        if (!result) {
             throw new DomainControllerException(`Domain does not exist!`, 400);
+        }
 
         await result.update({ ignored: value });
+
         return result;
     }
 }

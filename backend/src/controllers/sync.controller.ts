@@ -4,6 +4,8 @@ import { ClientController } from "../controllers/client.controller.js";
 import { DomainController } from "../controllers/domain.controller.js";
 import { QueryController } from "../controllers/query.controller.js";
 
+import { Sync } from "../models/sync.model.js";
+
 import { SyncService } from "../service/sync.service.js";
 import { SyncControllerException } from "../classes/Exceptions.js";
 
@@ -34,24 +36,24 @@ export class SyncController {
         this.syncService = new SyncService();
     }
 
-    async getLast() {
+    async getLast(): Promise<Sync | null> {
         const result = await this.syncService.getWithLimit(1);
-        return result?.[0] ?? null;
+        return result[0] ?? null;
     }
 
-    async getLast100() {
+    async getLast100(): Promise<Sync[]> {
         return await this.syncService.getWithLimit(100);
     }
 
-    async log(syncLog: SyncLogInput) {
+    async log(syncLog: SyncLogInput): Promise<Sync> {
         return await this.syncService.create(syncLog);
     }
 
-    async endStale() {
+    async endStale(): Promise<void> {
         return await this.syncService.endStale();
     }
 
-    async syncNow() {
+    async syncNow(): Promise<void> {
         // Check for running sync
         const lastSync = await this.getLast();
         if (lastSync && lastSync.status === 1) return;
@@ -123,7 +125,7 @@ export class SyncController {
         }
     }
 
-    startSyncSchedule(cron: string) {
+    startSyncSchedule(cron: string): void {
         schedule.scheduleJob(cron, async () => {
             try {
                 await this.syncNow();

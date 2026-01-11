@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import type { FindOptions } from "sequelize";
 
+import type { PaginatedResult } from "../interfaces/common.js";
+
 import { Domain } from "../models/domain.model.js";
 import { Client } from "../models/client.model.js";
 import { Query } from "../models/query.model.js";
@@ -8,10 +10,7 @@ import { Query } from "../models/query.model.js";
 export class DomainService {
     constructor() {}
 
-    /**
-     * Get all domains
-     */
-    async getAll(showDeleted?: boolean) {
+    async getAll(showDeleted?: boolean): Promise<Domain[]> {
         const results = await Domain.findAll({
             order: [["domain", "ASC"]],
             paranoid: showDeleted ? false : true
@@ -20,10 +19,10 @@ export class DomainService {
         return results;
     }
 
-    /**
-     * Get domains with total count, optional filters/pagination
-     */
-    async getAllWithCount(showDeleted?: boolean, options?: FindOptions) {
+    async getAllWithCount(
+        showDeleted?: boolean,
+        options?: FindOptions
+    ): Promise<PaginatedResult<Domain>> {
         const results = await Domain.findAndCountAll({
             ...options,
             attributes: [
@@ -53,10 +52,10 @@ export class DomainService {
         return results;
     }
 
-    /**
-     * Get domain details with associated clients and queries
-     */
-    async getDetail(id: string | number, showDeleted?: boolean) {
+    async getDetail(
+        id: string | number,
+        showDeleted?: boolean
+    ): Promise<Domain | null> {
         const result = await Domain.findByPk(id, {
             include: [
                 {
@@ -79,10 +78,10 @@ export class DomainService {
         return result;
     }
 
-    /**
-     * Get a domain by its name
-     */
-    async getByDomain(domain: string, showDeleted?: boolean) {
+    async getByDomain(
+        domain: string,
+        showDeleted?: boolean
+    ): Promise<Domain | null> {
         const result = await Domain.findOne({
             where: { domain },
             paranoid: showDeleted ? false : true
@@ -91,10 +90,7 @@ export class DomainService {
         return result;
     }
 
-    /**
-     * Create a new domain
-     */
-    async create(domain: string) {
+    async create(domain: string): Promise<Domain> {
         const result = await Domain.create({ domain });
         return result;
     }

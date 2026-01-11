@@ -1,3 +1,5 @@
+import { Query } from "../models/query.model.js";
+
 import { QueryService } from "../service/query.service.js";
 import { QueryControllerException } from "../classes/Exceptions.js";
 
@@ -8,21 +10,16 @@ export class QueryController {
         this.queryService = new QueryService();
     }
 
-    async getLast() {
+    async getLast(): Promise<Query | null> {
         const result = await this.queryService.getWithLimit(1);
-
-        if (!result || result.length === 0) {
-            return null;
-        }
-
-        return result[0];
+        return result[0] ?? null;
     }
 
     async createIfNotExist(
         clientId: number,
         domainId: number,
         query: { piHoleId: number; timestamp: Date }
-    ) {
+    ): Promise<[Query, boolean]> {
         const existing = await this.queryService.getByPiHoleId(query.piHoleId);
 
         if (existing) {

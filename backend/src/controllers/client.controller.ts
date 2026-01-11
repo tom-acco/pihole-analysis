@@ -7,6 +7,8 @@ import type {
     PaginatedResult
 } from "../interfaces/common.js";
 
+import { Client } from "../models/client.model.js";
+
 import { ClientService } from "../service/client.service.js";
 import { ClientControllerException } from "../classes/Exceptions.js";
 
@@ -17,16 +19,13 @@ export class ClientController {
         this.clientService = new ClientService();
     }
 
-    /**
-     * Get paginated clients with optional filter, sorting, and extra attributes
-     */
     async getAllPaginated(
         filter?: string,
         page?: number,
         perPage?: number,
         sortBy?: SortItem[],
         attributes?: PaginatedAttributes
-    ): Promise<PaginatedResult<any>> {
+    ): Promise<PaginatedResult<Client>> {
         const searchOptions: FindOptions = {};
 
         searchOptions.where = {
@@ -69,10 +68,7 @@ export class ClientController {
         return results;
     }
 
-    /**
-     * Get a single client with associated domains
-     */
-    async getClientDomains(id: string | number) {
+    async getClientDomains(id: string | number): Promise<Client | null> {
         const client = await this.clientService.getDetail(id);
 
         if (!client) {
@@ -85,10 +81,7 @@ export class ClientController {
         return client;
     }
 
-    /**
-     * Create a client if it doesn't exist
-     */
-    async createIfNotExist(ipaddress: string) {
+    async createIfNotExist(ipaddress: string): Promise<[Client, boolean]> {
         const existing = await this.clientService.getByIP(ipaddress);
 
         if (existing) {

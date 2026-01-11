@@ -3,10 +3,7 @@ import { Query } from "../models/query.model.js";
 export class QueryService {
     constructor() {}
 
-    /**
-     * Get queries with a limit
-     */
-    async getWithLimit(limit: number, showDeleted?: boolean) {
+    async getWithLimit(limit: number, showDeleted?: boolean): Promise<Query[]> {
         const results = await Query.findAll({
             limit,
             order: [["id", "DESC"]],
@@ -16,10 +13,10 @@ export class QueryService {
         return results;
     }
 
-    /**
-     * Get a query by Pi-hole ID
-     */
-    async getByPiHoleId(piHoleId: number, showDeleted?: boolean) {
+    async getByPiHoleId(
+        piHoleId: number,
+        showDeleted?: boolean
+    ): Promise<Query | null> {
         const result = await Query.findOne({
             where: { piHoleId },
             paranoid: showDeleted ? false : true
@@ -28,15 +25,12 @@ export class QueryService {
         return result;
     }
 
-    /**
-     * Create a new query
-     */
     async create(
         piHoleId: number,
         timestamp: Date,
         ClientId: number,
         DomainId: number
-    ) {
+    ): Promise<Query> {
         const result = await Query.create({
             piHoleId,
             timestamp,
