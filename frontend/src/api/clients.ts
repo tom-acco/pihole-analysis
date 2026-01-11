@@ -20,7 +20,7 @@ const getClients = async (params: DataTableParams) => {
   }
 };
 
-const getClient = async (id: String) => {
+const getClient = async (id: string) => {
   try {
     const res = await axios.get("/api/client", { params: { id: id } });
     return res.data;
@@ -35,7 +35,23 @@ const getClient = async (id: String) => {
   }
 };
 
+const setAlias = async (id: string, alias: string) => {
+  try {
+    const res = await axios.put("/api/client/alias", { id: id, alias: alias });
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      throw err.response?.data?.message || err.message;
+    } else if (err instanceof Error) {
+      throw err.message;
+    } else {
+      throw String(err);
+    }
+  }
+};
+
 export default {
   getClients: getClients,
-  getClient: getClient
+  getClient: getClient,
+  setAlias: setAlias
 };

@@ -74,7 +74,7 @@ const getIgnored = async (params: DataTableParams) => {
   }
 };
 
-const getDomain = async (id: String) => {
+const getDomain = async (id: string) => {
   try {
     const res = await axios.get("/api/domain", { params: { id: id } });
     return res.data;

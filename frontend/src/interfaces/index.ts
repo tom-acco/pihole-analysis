@@ -47,7 +47,7 @@ interface Query {
 interface DataTableParams {
   page: number;
   itemsPerPage: number;
-  search: String | undefined;
+  search: string | undefined;
   sortBy: DataTableSortItem[];
 }
 
