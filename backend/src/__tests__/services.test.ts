@@ -205,7 +205,9 @@ describe("Service Layer", () => {
 
                 expect(result.rows).toHaveLength(1);
                 const domainResult = result.rows[0];
-                const queryCount = (domainResult as any).dataValues?.queryCount ?? (domainResult as any).get("queryCount");
+                const queryCount =
+                    (domainResult as any).dataValues?.queryCount ??
+                    (domainResult as any).get("queryCount");
                 expect(queryCount).toBe(1);
             });
 
