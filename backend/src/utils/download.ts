@@ -1,7 +1,7 @@
-const axios = require("axios");
+import axios from "axios";
 
-const downloadFile = async (url) => {
-    const res = await axios.get(url, {
+export const downloadFile = async (url: string): Promise<Buffer> => {
+    const res = await axios.get<ArrayBuffer>(url, {
         responseType: "arraybuffer"
     });
 
@@ -11,5 +11,3 @@ const downloadFile = async (url) => {
 
     return Buffer.from(res.data);
 };
-
-module.exports = downloadFile;

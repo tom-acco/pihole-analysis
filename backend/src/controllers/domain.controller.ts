@@ -1,19 +1,37 @@
-const { Op } = require("sequelize");
+import type { FindOptions } from "sequelize";
+import { Op } from "sequelize";
 
-const { DomainService } = require("../service/domain.service");
-const { DomainControllerException } = require("../classes/Errors");
+import type {
+    SortItem,
+    PaginatedAttributes,
+    PaginatedResult
+} from "../interfaces/common.js";
 
-const aiAnalysis = require("../utils/ai");
+import { Domain } from "../models/domain.model.js";
 
-module.exports = class DomainController {
-    constructor(database) {
-        this.database = database;
+import { DomainService } from "../service/domain.service.js";
+import { DomainControllerException } from "../classes/Exceptions.js";
 
-        this.domainService = new DomainService(this.database);
+import { aiAnalysis } from "../utils/ai.js";
+
+export class DomainController {
+    private domainService: DomainService;
+
+    constructor() {
+        this.domainService = new DomainService();
     }
 
-    async getAllPaginated(filter, page, perPage, sortBy, attributes) {
-        const searchOptions = {};
+    /**
+     * Get all domains paginated, optionally filtered and sorted
+     */
+    async getAllPaginated(
+        filter?: string | null,
+        page?: number,
+        perPage?: number,
+        sortBy?: SortItem[],
+        attributes?: PaginatedAttributes
+    ): Promise<PaginatedResult<any>> {
+        const searchOptions: FindOptions = {};
 
         searchOptions.where = {
             ...(filter && {
@@ -28,18 +46,19 @@ module.exports = class DomainController {
 
         if (sortBy) {
             const orders = ["asc", "desc"];
-            const columns = ["domain", "risk", "category", "owner", "queryCount"];
+            const columns = [
+                "domain",
+                "risk",
+                "category",
+                "owner",
+                "queryCount"
+            ];
 
-            const order = [];
+            const order: any[] = [];
 
             for (const sortItem of sortBy) {
-                if (!orders.includes(sortItem.order)) {
-                    continue;
-                }
-
-                if (!columns.includes(sortItem.key)) {
-                    continue;
-                }
+                if (!orders.includes(sortItem.order)) continue;
+                if (!columns.includes(sortItem.key)) continue;
 
                 order.push([sortItem.key, sortItem.order.toUpperCase()]);
             }
@@ -56,17 +75,19 @@ module.exports = class DomainController {
 
         const results = await this.domainService.getAllWithCount(
             false,
-            false,
             searchOptions
         );
 
         return results;
     }
 
-    async getDomainClients(id) {
+    /**
+     * Get domain and associated clients by ID
+     */
+    async getDomainClients(id: number) {
         const domain = await this.domainService.getDetail(id);
 
-        if (domain === null) {
+        if (!domain) {
             throw new DomainControllerException(
                 `Domain with that ID does not exist!`,
                 400
@@ -76,35 +97,40 @@ module.exports = class DomainController {
         return domain;
     }
 
-    async createIfNotExist(domain) {
+    /**
+     * Create a domain if it doesn't already exist
+     */
+    async createIfNotExist(domain: string): Promise<[Domain, boolean]> {
         const existing = await this.domainService.getByDomain(domain);
 
-        if (existing) {
-            return [existing, false];
-        }
+        if (existing) return [existing, false];
 
         const result = await this.domainService.create(domain);
-
         return [result, true];
     }
 
-    async interrogate(domain) {
+    /**
+     * Run AI analysis on a domain
+     */
+    async interrogate(domain: string) {
         const result = await this.domainService.getByDomain(domain);
 
-        if (result === null) {
+        if (!result) {
             throw new DomainControllerException(`Domain does not exist!`, 400);
         }
 
         const analysis = await aiAnalysis(domain);
 
-        const riskMatrix = {
+        const riskMatrix: Record<string, number> = {
             low: 1,
             medium: 2,
             high: 3
         };
 
+        const riskValue = riskMatrix[analysis.risk_level] ?? null;
+
         await result.update({
-            risk: riskMatrix[analysis.risk_level],
+            risk: riskValue,
             category: analysis.category,
             owner: analysis.owner,
             comment: analysis.notes
@@ -113,45 +139,42 @@ module.exports = class DomainController {
         return result;
     }
 
-    async setAcknowledge(domain, value) {
+    /**
+     * Update domain acknowledged status
+     */
+    async setAcknowledge(domain: string, value: boolean) {
         const result = await this.domainService.getByDomain(domain);
 
-        if (result === null) {
+        if (!result)
             throw new DomainControllerException(`Domain does not exist!`, 400);
-        }
 
-        await result.update({
-            acknowledged: value
-        });
-
+        await result.update({ acknowledged: value });
         return result;
     }
 
-    async setFlag(domain, value) {
+    /**
+     * Update domain flagged status
+     */
+    async setFlag(domain: string, value: boolean) {
         const result = await this.domainService.getByDomain(domain);
 
-        if (result === null) {
+        if (!result)
             throw new DomainControllerException(`Domain does not exist!`, 400);
-        }
 
-        await result.update({
-            flagged: value
-        });
-
+        await result.update({ flagged: value });
         return result;
     }
 
-    async setIgnore(domain, value) {
+    /**
+     * Update domain ignored status
+     */
+    async setIgnore(domain: string, value: boolean) {
         const result = await this.domainService.getByDomain(domain);
 
-        if (result === null) {
+        if (!result)
             throw new DomainControllerException(`Domain does not exist!`, 400);
-        }
 
-        await result.update({
-            ignored: value
-        });
-
+        await result.update({ ignored: value });
         return result;
     }
-};
+}

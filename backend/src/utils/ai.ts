@@ -1,10 +1,21 @@
-const OpenAI = require("openai");
+import OpenAI from "openai";
 
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_KEY
-});
+import type { AnalysisResponse } from "../interfaces/ai.js";
 
-const aiAnalysis = async (domain) => {
+export const aiAnalysis = async (domain: string): Promise<AnalysisResponse> => {
+    if (process.env.OPENAI_ENABLE != "true") {
+        return {
+            risk_level: "0",
+            category: "",
+            owner: "",
+            notes: ""
+        };
+    }
+
+    const client = new OpenAI({
+        apiKey: process.env.OPENAI_KEY
+    });
+
     const response = await client.responses.create({
         model: "gpt-4.1-mini",
         input: [
@@ -56,5 +67,3 @@ ${domain}
 
     return JSON.parse(response.output_text);
 };
-
-module.exports = aiAnalysis;

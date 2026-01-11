@@ -1,43 +1,45 @@
-exports.ClientControllerException = class ClientControllerException extends (
-    Error
-) {
-    constructor(message, status) {
-        super(message);
-        this.name = this.constructor.name;
-        this.status = status ?? 400;
-        Error.captureStackTrace(this, this.constructor);
-    }
-};
+// exceptions.ts
 
-exports.DomainControllerException = class DomainControllerException extends (
-    Error
-) {
-    constructor(message, status) {
-        super(message);
-        this.name = this.constructor.name;
-        this.status = status ?? 400;
-        Error.captureStackTrace(this, this.constructor);
-    }
-};
+export class ClientControllerException extends Error {
+    status: number;
 
-exports.QueryControllerException = class QueryControllerException extends (
-    Error
-) {
-    constructor(message, status) {
+    constructor(message: string, status?: number) {
         super(message);
         this.name = this.constructor.name;
         this.status = status ?? 400;
         Error.captureStackTrace(this, this.constructor);
     }
-};
+}
 
-exports.SyncControllerException = class SyncControllerException extends (
-    Error
-) {
-    constructor(message, status) {
+export class DomainControllerException extends Error {
+    status: number;
+
+    constructor(message: string, status?: number) {
         super(message);
         this.name = this.constructor.name;
         this.status = status ?? 400;
         Error.captureStackTrace(this, this.constructor);
     }
-};
+}
+
+export class QueryControllerException extends Error {
+    status: number;
+
+    constructor(message: string, status?: number) {
+        super(message);
+        this.name = this.constructor.name;
+        this.status = status ?? 400;
+        Error.captureStackTrace(this, this.constructor);
+    }
+}
+
+export class SyncControllerException extends Error {
+    status: number;
+
+    constructor(message: string, status?: number) {
+        super(message);
+        this.name = this.constructor.name;
+        this.status = status ?? 400;
+        Error.captureStackTrace(this, this.constructor);
+    }
+}

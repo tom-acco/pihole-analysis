@@ -1,6 +1,6 @@
-const crypto = require("crypto");
+import crypto from "crypto";
 
-const decryptFile = (buffer, password) => {
+export const decryptFile = (buffer: Buffer, password: string): string => {
     const PBKDF2_ITERATIONS = 10000;
     const KEY_LENGTH = 32;
     const IV_LENGTH = 16;
@@ -26,10 +26,10 @@ const decryptFile = (buffer, password) => {
     const iv = keyIv.subarray(KEY_LENGTH);
 
     const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
-    return Buffer.concat([
+    const decrypted = Buffer.concat([
         decipher.update(encrypted),
         decipher.final()
-    ]).toString("utf8");
-};
+    ]);
 
-module.exports = decryptFile;
+    return decrypted.toString("utf8");
+};
