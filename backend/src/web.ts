@@ -5,7 +5,7 @@ import session from "express-session";
 import type { Express, RequestHandler } from "express";
 import type { Server } from "http";
 
-import { apiRouter } from "../routes/api.js";
+import { apiRouter } from "./routes/api.js";
 
 export const startWeb = async (): Promise<Server> => {
     const app: Express = express();

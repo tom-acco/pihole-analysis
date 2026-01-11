@@ -3,8 +3,8 @@ import path from "path";
 import dotenv from "dotenv";
 dotenv.config({ path: `${path.join(process.env.INIT_CWD ?? "./", ".env")}` });
 
-import { setupDatabase } from "./utils/database.js";
-import { startWeb } from "./utils/web.js";
+import { setupDatabase } from "./database.js";
+import { startWeb } from "./web.js";
 
 import { SyncController } from "./controllers/sync.controller.js";
 
