@@ -50,7 +50,7 @@ export class Client extends Model<
     declare countQueries: HasManyCountAssociationsMixin;
 }
 
-export const initClientModel = (sequelize: Sequelize) => {
+export const initClientModel = (sequelize: Sequelize): void => {
     Client.init(
         {
             id: {

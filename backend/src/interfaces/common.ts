@@ -1,5 +1,5 @@
 export interface SortItem {
-    key: "ipaddress" | "alias";
+    key: string;
     order: "asc" | "desc";
 }
 

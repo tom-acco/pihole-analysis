@@ -7,12 +7,10 @@ import { Domain } from "../models/domain.model.js";
 import { Query } from "../models/query.model.js";
 
 export class ClientService {
-    constructor() {}
-
     async getAll(showDeleted?: boolean): Promise<Client[]> {
         const results = await Client.findAll({
             order: [["ipaddress", "ASC"]],
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return results;
@@ -24,7 +22,7 @@ export class ClientService {
     ): Promise<PaginatedResult<Client>> {
         const results = await Client.findAndCountAll({
             ...options,
-            paranoid: showDeleted ? false : true,
+            paranoid: !showDeleted,
             distinct: true
         });
 
@@ -46,13 +44,13 @@ export class ClientService {
                             model: Query,
                             where: { ClientId: id },
                             required: false,
-                            paranoid: showDeleted ? false : true
+                            paranoid: !showDeleted
                         }
                     ],
-                    paranoid: showDeleted ? false : true
+                    paranoid: !showDeleted
                 }
             ],
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return result;
@@ -64,7 +62,7 @@ export class ClientService {
     ): Promise<Client | null> {
         const result = await Client.findOne({
             where: { ipaddress },
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return result;

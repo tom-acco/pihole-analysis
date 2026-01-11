@@ -1,13 +1,11 @@
 import { Sync } from "../models/sync.model.js";
 
 export class SyncService {
-    constructor() {}
-
     async getWithLimit(limit: number, showDeleted?: boolean): Promise<Sync[]> {
         const results = await Sync.findAll({
             limit,
             order: [["id", "DESC"]],
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return results;

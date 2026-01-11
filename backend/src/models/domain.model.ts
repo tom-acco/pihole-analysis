@@ -57,7 +57,7 @@ export class Domain extends Model<
     declare countQueries: HasManyCountAssociationsMixin;
 }
 
-export const initDomainModel = (sequelize: Sequelize) => {
+export const initDomainModel = (sequelize: Sequelize): void => {
     Domain.init(
         {
             id: {
@@ -121,6 +121,4 @@ export const initDomainModel = (sequelize: Sequelize) => {
             ]
         }
     );
-
-    return Domain;
 };

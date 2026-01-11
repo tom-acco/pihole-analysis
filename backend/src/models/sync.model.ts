@@ -19,7 +19,7 @@ export class Sync extends Model<
     declare queries: number;
 }
 
-export const initSyncModel = (sequelize: Sequelize) => {
+export const initSyncModel = (sequelize: Sequelize): void => {
     Sync.init(
         {
             id: {
@@ -57,6 +57,4 @@ export const initSyncModel = (sequelize: Sequelize) => {
             modelName: "Sync"
         }
     );
-
-    return Sync;
 };

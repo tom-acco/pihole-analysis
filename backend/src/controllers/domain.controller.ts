@@ -51,7 +51,7 @@ export class DomainController {
                 "queryCount"
             ];
 
-            const order: any[] = [];
+            const order: Array<[string, string]> = [];
 
             for (const sortItem of sortBy) {
                 if (!orders.includes(sortItem.order)) continue;
@@ -61,7 +61,7 @@ export class DomainController {
             }
 
             if (order.length > 0) {
-                searchOptions.order = order;
+                searchOptions.order = order as any;
             }
         }
 
@@ -94,10 +94,10 @@ export class DomainController {
     async createIfNotExist(domain: string): Promise<[Domain, boolean]> {
         const existing = await this.domainService.getByDomain(domain);
 
-        if (existing) return [existing, false];
+        if (existing) return [existing, false] as const;
 
         const result = await this.domainService.create(domain);
-        return [result, true];
+        return [result, true] as const;
     }
 
     async interrogate(domain: string): Promise<Domain> {

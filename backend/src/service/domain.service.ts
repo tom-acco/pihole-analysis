@@ -8,12 +8,10 @@ import { Client } from "../models/client.model.js";
 import { Query } from "../models/query.model.js";
 
 export class DomainService {
-    constructor() {}
-
     async getAll(showDeleted?: boolean): Promise<Domain[]> {
         const results = await Domain.findAll({
             order: [["domain", "ASC"]],
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return results;
@@ -45,7 +43,7 @@ export class DomainService {
                     "queryCount"
                 ]
             ],
-            paranoid: showDeleted ? false : true,
+            paranoid: !showDeleted,
             distinct: true
         });
 
@@ -66,13 +64,13 @@ export class DomainService {
                             model: Query,
                             where: { DomainId: id },
                             required: false,
-                            paranoid: showDeleted ? false : true
+                            paranoid: !showDeleted
                         }
                     ],
-                    paranoid: showDeleted ? false : true
+                    paranoid: !showDeleted
                 }
             ],
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return result;
@@ -84,7 +82,7 @@ export class DomainService {
     ): Promise<Domain | null> {
         const result = await Domain.findOne({
             where: { domain },
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return result;

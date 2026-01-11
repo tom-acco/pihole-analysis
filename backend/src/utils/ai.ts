@@ -3,7 +3,7 @@ import OpenAI from "openai";
 import type { AnalysisResponse } from "../interfaces/ai.js";
 
 export const aiAnalysis = async (domain: string): Promise<AnalysisResponse> => {
-    if (process.env.OPENAI_ENABLE != "true") {
+    if (process.env.OPENAI_ENABLE !== "true") {
         return {
             risk_level: "0",
             category: "",
@@ -16,9 +16,9 @@ export const aiAnalysis = async (domain: string): Promise<AnalysisResponse> => {
         apiKey: process.env.OPENAI_KEY
     });
 
-    const response = await client.responses.create({
-        model: "gpt-4.1-mini",
-        input: [
+    const response = await client.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
             {
                 role: "system",
                 content: `
@@ -46,10 +46,11 @@ ${domain}
 `
             }
         ],
-        text: {
-            format: {
+        response_format: {
+            type: "json_schema",
+            json_schema: {
                 name: "dns_analysis",
-                type: "json_schema",
+                strict: true,
                 schema: {
                     type: "object",
                     additionalProperties: false,
@@ -65,5 +66,5 @@ ${domain}
         }
     });
 
-    return JSON.parse(response.output_text);
+    return JSON.parse(response.choices[0]?.message?.content || "{}");
 };

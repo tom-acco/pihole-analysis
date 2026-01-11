@@ -35,7 +35,7 @@ export class Query extends Model<
     declare createDomain: BelongsToCreateAssociationMixin<Domain>;
 }
 
-export const initQueryModel = (sequelize: Sequelize) => {
+export const initQueryModel = (sequelize: Sequelize): void => {
     Query.init(
         {
             id: {
@@ -75,6 +75,4 @@ export const initQueryModel = (sequelize: Sequelize) => {
             ]
         }
     );
-
-    return Query;
 };

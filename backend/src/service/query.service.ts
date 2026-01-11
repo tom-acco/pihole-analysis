@@ -1,13 +1,11 @@
 import { Query } from "../models/query.model.js";
 
 export class QueryService {
-    constructor() {}
-
     async getWithLimit(limit: number, showDeleted?: boolean): Promise<Query[]> {
         const results = await Query.findAll({
             limit,
             order: [["id", "DESC"]],
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return results;
@@ -19,7 +17,7 @@ export class QueryService {
     ): Promise<Query | null> {
         const result = await Query.findOne({
             where: { piHoleId },
-            paranoid: showDeleted ? false : true
+            paranoid: !showDeleted
         });
 
         return result;
