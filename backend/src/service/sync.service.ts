@@ -1,3 +1,4 @@
+import { SyncStatus } from "../interfaces/sync.js";
 import { Sync } from "../models/sync.model.js";
 
 export class SyncService {
@@ -21,7 +22,7 @@ export class SyncService {
         const result = await Sync.create({
             startTime: syncLog.startTime,
             endTime: syncLog.endTime ?? null,
-            status: syncLog.status ?? 0,
+            status: syncLog.status ?? SyncStatus.PENDING,
             clients: syncLog.clients ?? 0,
             domains: syncLog.domains ?? 0,
             queries: syncLog.queries ?? 0
@@ -32,10 +33,10 @@ export class SyncService {
 
     async endStale(): Promise<void> {
         await Sync.update(
-            { status: 3, endTime: new Date() },
+            { status: SyncStatus.FAILED, endTime: new Date() },
             {
                 where: {
-                    status: 1
+                    status: SyncStatus.RUNNING
                 }
             }
         );

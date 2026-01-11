@@ -3,6 +3,7 @@ import {
     cleanupTestDatabase,
     clearTestDatabase
 } from "./setup.js";
+import { SyncStatus } from "../interfaces/sync.js";
 import { ClientController } from "../controllers/client.controller.js";
 import { DomainController } from "../controllers/domain.controller.js";
 import { QueryController } from "../controllers/query.controller.js";
@@ -569,7 +570,7 @@ describe("Controller Layer", () => {
                 await Sync.create({
                     startTime: new Date("2024-01-01"),
                     endTime: new Date(),
-                    status: 2,
+                    status: SyncStatus.SUCCESS,
                     clients: 1,
                     domains: 0,
                     queries: 0
@@ -578,7 +579,7 @@ describe("Controller Layer", () => {
                 await Sync.create({
                     startTime: new Date("2024-01-02"),
                     endTime: new Date(),
-                    status: 2,
+                    status: SyncStatus.SUCCESS,
                     clients: 2,
                     domains: 0,
                     queries: 0
@@ -602,7 +603,7 @@ describe("Controller Layer", () => {
                     await Sync.create({
                         startTime: new Date(),
                         endTime: new Date(),
-                        status: 2,
+                        status: SyncStatus.SUCCESS,
                         clients: i,
                         domains: 0,
                         queries: 0
@@ -620,7 +621,7 @@ describe("Controller Layer", () => {
                 const syncLog = {
                     startTime: new Date(),
                     endTime: null,
-                    status: 1,
+                    status: SyncStatus.RUNNING,
                     clients: 0,
                     domains: 0,
                     queries: 0
@@ -638,7 +639,7 @@ describe("Controller Layer", () => {
                 const runningSync = await Sync.create({
                     startTime: new Date(),
                     endTime: null,
-                    status: 1,
+                    status: SyncStatus.RUNNING,
                     clients: 0,
                     domains: 0,
                     queries: 0
@@ -654,7 +655,7 @@ describe("Controller Layer", () => {
                 const completedSync = await Sync.create({
                     startTime: new Date(),
                     endTime: new Date(),
-                    status: 2,
+                    status: SyncStatus.SUCCESS,
                     clients: 5,
                     domains: 10,
                     queries: 100

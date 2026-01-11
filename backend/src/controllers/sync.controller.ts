@@ -1,5 +1,6 @@
 import schedule from "node-schedule";
 
+import { SyncStatus } from "../interfaces/sync.js";
 import type { PiHoleItem, SyncLogInput } from "../interfaces/sync.js";
 import { ClientController } from "../controllers/client.controller.js";
 import { DomainController } from "../controllers/domain.controller.js";
@@ -51,7 +52,7 @@ export class SyncController {
     async syncNow(): Promise<void> {
         // Check for running sync
         const lastSync = await this.getLast();
-        if (lastSync && lastSync.status === 1) return;
+        if (lastSync && lastSync.status === SyncStatus.RUNNING) return;
 
         // Download and decrypt Pi-hole dump
         const ct = await downloadFile(
@@ -74,7 +75,7 @@ export class SyncController {
         const syncLog = await this.log({
             startTime: new Date(),
             endTime: null,
-            status: 1,
+            status: SyncStatus.RUNNING,
             clients: 0,
             domains: 0,
             queries: 0
@@ -113,10 +114,16 @@ export class SyncController {
                 await syncLog.save();
             }
 
-            await syncLog.update({ endTime: new Date(), status: 2 });
+            await syncLog.update({
+                endTime: new Date(),
+                status: SyncStatus.SUCCESS
+            });
         } catch (err) {
             console.error("Sync failed:", err);
-            await syncLog.update({ endTime: new Date(), status: 3 });
+            await syncLog.update({
+                endTime: new Date(),
+                status: SyncStatus.FAILED
+            });
         }
     }
 

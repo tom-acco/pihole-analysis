@@ -3,6 +3,7 @@ import {
     cleanupTestDatabase,
     clearTestDatabase
 } from "./setup.js";
+import { SyncStatus } from "../interfaces/sync.js";
 import { ClientService } from "../service/client.service.js";
 import { DomainService } from "../service/domain.service.js";
 import { QueryService } from "../service/query.service.js";
@@ -421,7 +422,7 @@ describe("Service Layer", () => {
                 await Sync.create({
                     startTime: new Date("2024-01-01"),
                     endTime: new Date(),
-                    status: 2,
+                    status: SyncStatus.SUCCESS,
                     clients: 1,
                     domains: 0,
                     queries: 0
@@ -430,7 +431,7 @@ describe("Service Layer", () => {
                 await Sync.create({
                     startTime: new Date("2024-01-02"),
                     endTime: new Date(),
-                    status: 2,
+                    status: SyncStatus.SUCCESS,
                     clients: 2,
                     domains: 0,
                     queries: 0
@@ -448,7 +449,7 @@ describe("Service Layer", () => {
                     await Sync.create({
                         startTime: new Date(),
                         endTime: new Date(),
-                        status: 2,
+                        status: SyncStatus.SUCCESS,
                         clients: i,
                         domains: 0,
                         queries: 0
@@ -466,7 +467,7 @@ describe("Service Layer", () => {
                 const syncLog = {
                     startTime: new Date(),
                     endTime: null,
-                    status: 1,
+                    status: SyncStatus.RUNNING,
                     clients: 0,
                     domains: 0,
                     queries: 0
@@ -474,7 +475,7 @@ describe("Service Layer", () => {
 
                 const result = await syncService.create(syncLog);
 
-                expect(result.status).toBe(1);
+                expect(result.status).toBe(SyncStatus.RUNNING);
                 expect(result.clients).toBe(0);
                 expect(result.endTime).toBeNull();
             });
@@ -491,7 +492,7 @@ describe("Service Layer", () => {
 
                 const result = await syncService.create(syncLog);
 
-                expect(result.status).toBe(0);
+                expect(result.status).toBe(SyncStatus.PENDING);
                 expect(result.clients).toBe(0);
                 expect(result.domains).toBe(0);
                 expect(result.queries).toBe(0);
@@ -503,7 +504,7 @@ describe("Service Layer", () => {
                 const runningSync = await Sync.create({
                     startTime: new Date(),
                     endTime: null,
-                    status: 1,
+                    status: SyncStatus.RUNNING,
                     clients: 0,
                     domains: 0,
                     queries: 0
@@ -513,7 +514,7 @@ describe("Service Layer", () => {
 
                 const updated = await Sync.findByPk(runningSync.id);
 
-                expect(updated?.status).toBe(3);
+                expect(updated?.status).toBe(SyncStatus.FAILED);
                 expect(updated?.endTime).not.toBeNull();
             });
 
@@ -521,7 +522,7 @@ describe("Service Layer", () => {
                 const completedSync = await Sync.create({
                     startTime: new Date(),
                     endTime: new Date(),
-                    status: 2,
+                    status: SyncStatus.SUCCESS,
                     clients: 5,
                     domains: 10,
                     queries: 100
@@ -531,14 +532,14 @@ describe("Service Layer", () => {
 
                 const updated = await Sync.findByPk(completedSync.id);
 
-                expect(updated?.status).toBe(2);
+                expect(updated?.status).toBe(SyncStatus.SUCCESS);
             });
 
             it("should handle multiple running syncs", async () => {
                 await Sync.create({
                     startTime: new Date(),
                     endTime: null,
-                    status: 1,
+                    status: SyncStatus.RUNNING,
                     clients: 0,
                     domains: 0,
                     queries: 0
@@ -547,7 +548,7 @@ describe("Service Layer", () => {
                 await Sync.create({
                     startTime: new Date(),
                     endTime: null,
-                    status: 1,
+                    status: SyncStatus.RUNNING,
                     clients: 0,
                     domains: 0,
                     queries: 0
@@ -556,7 +557,9 @@ describe("Service Layer", () => {
                 await syncService.endStale();
 
                 const all = await Sync.findAll();
-                expect(all.every((s) => s.status === 3)).toBe(true);
+                expect(all.every((s) => s.status === SyncStatus.FAILED)).toBe(
+                    true
+                );
             });
         });
     });
