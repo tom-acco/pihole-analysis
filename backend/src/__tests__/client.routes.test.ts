@@ -97,12 +97,10 @@ describe("Client Routes", () => {
             await Client.create({ ipaddress: "192.168.1.2" });
             await Client.create({ ipaddress: "192.168.1.1" });
 
-            const response = await request(app)
-                .get("/api/clients")
-                .query({
-                    "sortBy[0][key]": "ipaddress",
-                    "sortBy[0][order]": "asc"
-                });
+            const response = await request(app).get("/api/clients").query({
+                "sortBy[0][key]": "ipaddress",
+                "sortBy[0][order]": "asc"
+            });
 
             expect(response.status).toBe(200);
             expect(response.body.rows[0].ipaddress).toBe("192.168.1.1");

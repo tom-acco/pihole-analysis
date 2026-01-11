@@ -8,17 +8,15 @@ import { Client } from "../models/client.model.js";
 import { Query } from "../models/query.model.js";
 
 export class DomainService {
-    async getAll(showDeleted?: boolean): Promise<Domain[]> {
+    async getAll(): Promise<Domain[]> {
         const results = await Domain.findAll({
-            order: [["domain", "ASC"]],
-            paranoid: !showDeleted
+            order: [["domain", "ASC"]]
         });
 
         return results;
     }
 
     async getAllWithCount(
-        showDeleted?: boolean,
         options?: FindOptions
     ): Promise<PaginatedResult<Domain>> {
         const results = await Domain.findAndCountAll({
@@ -43,17 +41,13 @@ export class DomainService {
                     "queryCount"
                 ]
             ],
-            paranoid: !showDeleted,
             distinct: true
         });
 
         return results;
     }
 
-    async getDetail(
-        id: string | number,
-        showDeleted?: boolean
-    ): Promise<Domain | null> {
+    async getDetail(id: string | number): Promise<Domain | null> {
         const result = await Domain.findByPk(id, {
             include: [
                 {
@@ -63,26 +57,19 @@ export class DomainService {
                         {
                             model: Query,
                             where: { DomainId: id },
-                            required: false,
-                            paranoid: !showDeleted
+                            required: false
                         }
-                    ],
-                    paranoid: !showDeleted
+                    ]
                 }
-            ],
-            paranoid: !showDeleted
+            ]
         });
 
         return result;
     }
 
-    async getByDomain(
-        domain: string,
-        showDeleted?: boolean
-    ): Promise<Domain | null> {
+    async getByDomain(domain: string): Promise<Domain | null> {
         const result = await Domain.findOne({
-            where: { domain },
-            paranoid: !showDeleted
+            where: { domain }
         });
 
         return result;

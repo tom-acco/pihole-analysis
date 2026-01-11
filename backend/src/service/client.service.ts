@@ -7,32 +7,26 @@ import { Domain } from "../models/domain.model.js";
 import { Query } from "../models/query.model.js";
 
 export class ClientService {
-    async getAll(showDeleted?: boolean): Promise<Client[]> {
+    async getAll(): Promise<Client[]> {
         const results = await Client.findAll({
-            order: [["ipaddress", "ASC"]],
-            paranoid: !showDeleted
+            order: [["ipaddress", "ASC"]]
         });
 
         return results;
     }
 
     async getAllWithCount(
-        showDeleted?: boolean,
         options?: FindOptions
     ): Promise<PaginatedResult<Client>> {
         const results = await Client.findAndCountAll({
             ...options,
-            paranoid: !showDeleted,
             distinct: true
         });
 
         return results;
     }
 
-    async getDetail(
-        id: string | number,
-        showDeleted?: boolean
-    ): Promise<Client | null> {
+    async getDetail(id: string | number): Promise<Client | null> {
         const result = await Client.findByPk(id, {
             include: [
                 {
@@ -43,26 +37,19 @@ export class ClientService {
                         {
                             model: Query,
                             where: { ClientId: id },
-                            required: false,
-                            paranoid: !showDeleted
+                            required: false
                         }
-                    ],
-                    paranoid: !showDeleted
+                    ]
                 }
-            ],
-            paranoid: !showDeleted
+            ]
         });
 
         return result;
     }
 
-    async getByIP(
-        ipaddress: string,
-        showDeleted?: boolean
-    ): Promise<Client | null> {
+    async getByIP(ipaddress: string): Promise<Client | null> {
         const result = await Client.findOne({
-            where: { ipaddress },
-            paranoid: !showDeleted
+            where: { ipaddress }
         });
 
         return result;

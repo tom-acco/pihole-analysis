@@ -70,10 +70,7 @@ export class DomainController {
             searchOptions.offset = (page - 1) * perPage;
         }
 
-        const results = await this.domainService.getAllWithCount(
-            false,
-            searchOptions
-        );
+        const results = await this.domainService.getAllWithCount(searchOptions);
 
         return results;
     }

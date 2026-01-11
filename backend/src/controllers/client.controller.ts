@@ -60,10 +60,7 @@ export class ClientController {
             searchOptions.offset = (page - 1) * perPage;
         }
 
-        const results = await this.clientService.getAllWithCount(
-            false,
-            searchOptions
-        );
+        const results = await this.clientService.getAllWithCount(searchOptions);
 
         return results;
     }
