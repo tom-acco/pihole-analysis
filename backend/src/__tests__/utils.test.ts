@@ -35,7 +35,7 @@ describe("Utils", () => {
         });
 
         it("should ignore non-string search values", () => {
-            mockReq.query = { search: 123 };
+            mockReq.query = { search: 123 as any };
 
             const result = parsePagination(mockReq as Request);
 
@@ -77,10 +77,12 @@ describe("Utils", () => {
             const result = parsePagination(mockReq as Request);
 
             expect(result.sortBy).toHaveLength(2);
-            expect(result.sortBy?.[0].key).toBe("domain");
-            expect(result.sortBy?.[0].order).toBe("asc");
-            expect(result.sortBy?.[1].key).toBe("risk");
-            expect(result.sortBy?.[1].order).toBe("desc");
+            if (result.sortBy && result.sortBy.length >= 2) {
+                expect(result.sortBy[0]!.key).toBe("domain");
+                expect(result.sortBy[0]!.order).toBe("asc");
+                expect(result.sortBy[1]!.key).toBe("risk");
+                expect(result.sortBy[1]!.order).toBe("desc");
+            }
         });
 
         it("should filter out invalid sortBy items", () => {
@@ -96,7 +98,9 @@ describe("Utils", () => {
             const result = parsePagination(mockReq as Request);
 
             expect(result.sortBy).toHaveLength(1);
-            expect(result.sortBy?.[0].key).toBe("domain");
+            if (result.sortBy && result.sortBy.length >= 1) {
+                expect(result.sortBy[0]!.key).toBe("domain");
+            }
         });
 
         it("should handle empty sortBy array", () => {
@@ -128,7 +132,9 @@ describe("Utils", () => {
             const result = parsePagination(mockReq as Request);
 
             expect(result.sortBy).toHaveLength(1);
-            expect(result.sortBy?.[0].key).toBe("domain");
+            if (result.sortBy && result.sortBy.length >= 1) {
+                expect(result.sortBy[0]!.key).toBe("domain");
+            }
         });
 
         it("should handle non-array sortBy", () => {
@@ -163,7 +169,9 @@ describe("Utils", () => {
             const result = parsePagination(mockReq as Request);
 
             expect(result.sortBy).toHaveLength(1);
-            expect(result.sortBy?.[0].key).toBe("domain");
+            if (result.sortBy && result.sortBy.length >= 1) {
+                expect(result.sortBy[0]!.key).toBe("domain");
+            }
         });
     });
 

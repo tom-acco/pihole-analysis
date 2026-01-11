@@ -193,7 +193,6 @@ describe("Service Layer", () => {
                     ipaddress: "192.168.1.1"
                 });
 
-                // Create some queries
                 await Query.create({
                     piHoleId: 1,
                     timestamp: new Date(),
@@ -220,7 +219,7 @@ describe("Service Layer", () => {
                 });
 
                 expect(result.count).toBe(1);
-                expect(result.rows[0].domain).toBe("example.com");
+                expect(result.rows[0]?.domain).toBe("example.com");
             });
         });
 
@@ -315,8 +314,8 @@ describe("Service Layer", () => {
                 const result = await queryService.getWithLimit(10);
 
                 expect(result).toHaveLength(2);
-                expect(result[0].piHoleId).toBe(2);
-                expect(result[1].piHoleId).toBe(1);
+                expect(result[0]?.piHoleId).toBe(2);
+                expect(result[1]?.piHoleId).toBe(1);
             });
 
             it("should respect limit parameter", async () => {
@@ -422,8 +421,8 @@ describe("Service Layer", () => {
                 const result = await syncService.getWithLimit(10);
 
                 expect(result).toHaveLength(2);
-                expect(result[0].clients).toBe(2);
-                expect(result[1].clients).toBe(1);
+                expect(result[0]?.clients).toBe(2);
+                expect(result[1]?.clients).toBe(1);
             });
 
             it("should respect limit parameter", async () => {
