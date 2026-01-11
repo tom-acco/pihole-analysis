@@ -1,42 +1,31 @@
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
 
 import { SyncController } from "../controllers/sync.controller.js";
-import { SyncControllerException } from "../utils/exceptions.js";
+
+import { asyncHandler } from "../middleware/error-handler.middleware.js";
 
 export const syncRouter = (): Router => {
     const router = Router();
     const syncController = new SyncController();
 
-    router.get("/sync", async (req: Request, res: Response) => {
-        try {
+    router.get(
+        "/sync",
+        asyncHandler(async (req, res) => {
             const result = await syncController.getLast100();
             return res.status(200).json(result);
-        } catch (err) {
-            if (err instanceof SyncControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error getting sync logs", err);
-                return res.status(500).send();
-            }
-        }
-    });
+        }, "getting sync logs")
+    );
 
-    router.post("/sync", async (req: Request, res: Response) => {
-        try {
+    router.post(
+        "/sync",
+        asyncHandler(async (req, res) => {
             syncController.syncNow();
 
             setTimeout(() => {
                 return res.status(200).send();
             }, 500);
-        } catch (err) {
-            if (err instanceof SyncControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error running sync", err);
-                return res.status(500).send();
-            }
-        }
-    });
+        }, "running sync")
+    );
 
     return router;
 };

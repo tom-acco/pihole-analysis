@@ -1,41 +1,23 @@
-import { Router, type Request, type Response } from "express";
+import { Router } from "express";
 
 import { DomainController } from "../controllers/domain.controller.js";
-import { DomainControllerException } from "../utils/exceptions.js";
 
 import { parsePagination } from "../utils/routes.js";
-
-const handleBulkDomainUpdate = async <T>(
-    req: Request,
-    res: Response,
-    fn: (domain: string, value: any) => Promise<T>
-) => {
-    try {
-        const domains = Array.isArray(req.body.domains)
-            ? req.body.domains
-            : [req.body.domains];
-
-        for (const domain of domains) {
-            await fn(domain, req.body.value);
-        }
-
-        return res.status(200).send();
-    } catch (err) {
-        if (err instanceof DomainControllerException) {
-            return res.status(err.status).send(err.message);
-        } else {
-            console.error("Error updating domain", err);
-            return res.status(500).send();
-        }
-    }
-};
+import { asyncHandler } from "../middleware/error-handler.middleware.js";
+import {
+    validateId,
+    validateDomain,
+    validateBulkDomainUpdate
+} from "../middleware/validation.middleware.js";
+import { validateDomainFormat } from "../middleware/domain-validator.middleware.js";
 
 export const domainRouter = (): Router => {
     const router = Router();
     const domainController = new DomainController();
 
-    router.get("/domains", async (req: Request, res: Response) => {
-        try {
+    router.get(
+        "/domains",
+        asyncHandler(async (req, res) => {
             const { search, page, itemsPerPage, sortBy } = parsePagination(req);
             const result = await domainController.getAllPaginated(
                 search,
@@ -47,18 +29,23 @@ export const domainRouter = (): Router => {
                 }
             );
             return res.status(200).json(result);
-        } catch (err) {
-            if (err instanceof DomainControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error getting domains", err);
-                return res.status(500).send();
-            }
-        }
-    });
+        }, "getting domains")
+    );
 
-    router.get("/domains/new", async (req: Request, res: Response) => {
-        try {
+    router.get(
+        "/domain",
+        validateId("query"),
+        asyncHandler(async (req, res) => {
+            const id = parseInt(req.query.id as string);
+            const result = await domainController.getDomainClients(id);
+
+            return res.status(200).json(result);
+        }, "getting domain")
+    );
+
+    router.get(
+        "/domains/new",
+        asyncHandler(async (req, res) => {
             const { search, page, itemsPerPage, sortBy } = parsePagination(req);
             const result = await domainController.getAllPaginated(
                 search,
@@ -72,18 +59,12 @@ export const domainRouter = (): Router => {
                 }
             );
             return res.status(200).json(result);
-        } catch (err) {
-            if (err instanceof DomainControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error getting domains", err);
-                return res.status(500).send();
-            }
-        }
-    });
+        }, "getting new domains")
+    );
 
-    router.get("/domains/flagged", async (req: Request, res: Response) => {
-        try {
+    router.get(
+        "/domains/flagged",
+        asyncHandler(async (req, res) => {
             const { search, page, itemsPerPage, sortBy } = parsePagination(req);
             const result = await domainController.getAllPaginated(
                 search,
@@ -96,18 +77,12 @@ export const domainRouter = (): Router => {
                 }
             );
             return res.status(200).json(result);
-        } catch (err) {
-            if (err instanceof DomainControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error getting domains", err);
-                return res.status(500).send();
-            }
-        }
-    });
+        }, "getting flagged domains")
+    );
 
-    router.get("/domains/ignored", async (req: Request, res: Response) => {
-        try {
+    router.get(
+        "/domains/ignored",
+        asyncHandler(async (req, res) => {
             const { search, page, itemsPerPage, sortBy } = parsePagination(req);
             const result = await domainController.getAllPaginated(
                 search,
@@ -119,72 +94,65 @@ export const domainRouter = (): Router => {
                 }
             );
             return res.status(200).json(result);
-        } catch (err) {
-            if (err instanceof DomainControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error getting domains", err);
-                return res.status(500).send();
-            }
-        }
-    });
+        }, "getting ignored domains")
+    );
 
-    router.get("/domain", async (req: Request, res: Response) => {
-        try {
-            const id = parseInt(req.query.id as string);
-
-            if (isNaN(id)) {
-                return res.status(400).send("Invalid id");
-            }
-            const result = await domainController.getDomainClients(id);
-
-            return res.status(200).json(result);
-        } catch (err) {
-            if (err instanceof DomainControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error getting domain", err);
-                return res.status(500).send();
-            }
-        }
-    });
-
-    router.post("/domain/interrogate", async (req: Request, res: Response) => {
-        try {
+    router.post(
+        "/domain/interrogate",
+        validateDomain,
+        validateDomainFormat,
+        asyncHandler(async (req, res) => {
             const result = await domainController.interrogate(req.body.domain);
             return res.status(200).send(result);
-        } catch (err) {
-            if (err instanceof DomainControllerException) {
-                return res.status(err.status).send(err.message);
-            } else {
-                console.error("Error interrogating domain", err);
-                return res.status(500).send();
+        }, "interrogating domain")
+    );
+
+    router.post(
+        "/domain/acknowledge",
+        validateBulkDomainUpdate,
+        asyncHandler(async (req, res) => {
+            const domains = Array.isArray(req.body.domains)
+                ? req.body.domains
+                : [req.body.domains];
+
+            for (const domain of domains) {
+                await domainController.setAcknowledge(domain, req.body.value);
             }
-        }
-    });
 
-    router.post("/domain/acknowledge", (req, res) =>
-        handleBulkDomainUpdate(
-            req,
-            res,
-            domainController.setAcknowledge.bind(domainController)
-        )
+            return res.status(200).send();
+        }, "acknowledging domains")
     );
 
-    router.post("/domain/flag", (req, res) =>
-        handleBulkDomainUpdate(
-            req,
-            res,
-            domainController.setFlag.bind(domainController)
-        )
+    router.post(
+        "/domain/flag",
+        validateBulkDomainUpdate,
+        asyncHandler(async (req, res) => {
+            const domains = Array.isArray(req.body.domains)
+                ? req.body.domains
+                : [req.body.domains];
+
+            for (const domain of domains) {
+                await domainController.setFlag(domain, req.body.value);
+            }
+
+            return res.status(200).send();
+        }, "flagging domains")
     );
 
-    router.post("/domain/ignore", (req, res) =>
-        handleBulkDomainUpdate(
-            req,
-            res,
-            domainController.setIgnore.bind(domainController)
-        )
+    router.post(
+        "/domain/ignore",
+        validateBulkDomainUpdate,
+        asyncHandler(async (req, res) => {
+            const domains = Array.isArray(req.body.domains)
+                ? req.body.domains
+                : [req.body.domains];
+
+            for (const domain of domains) {
+                await domainController.setIgnore(domain, req.body.value);
+            }
+
+            return res.status(200).send();
+        }, "ignoring domains")
     );
 
     return router;
