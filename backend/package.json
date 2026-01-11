@@ -4,7 +4,9 @@
     "main": "src/index.ts",
     "type": "module",
     "scripts": {
-        "dev": "tsx src/index.ts",
+        "build": "tsc",
+        "start": "node ./dist",
+        "dev": "tsx watch src/index.ts",
         "prettier": "prettier --check .",
         "prettier:fix": "prettier --write .",
         "lint": "eslint . ",
