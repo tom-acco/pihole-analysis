@@ -15,28 +15,26 @@ import {
 const parsePagination = (req: Request) => {
     const search: string | undefined =
         typeof req.query.search === "string" ? req.query.search : undefined;
+
     const page = req.query.page
         ? parseInt(req.query.page as string)
         : undefined;
+
     const itemsPerPage = req.query.itemsPerPage
         ? parseInt(req.query.itemsPerPage as string)
         : undefined;
-    let sortBy: SortItem[] | undefined = undefined;
 
-    if (typeof req.query.sortBy === "string") {
-        try {
-            const parsed = JSON.parse(req.query.sortBy);
-            if (Array.isArray(parsed)) {
-                sortBy = parsed.filter(
-                    (item) =>
-                        item.key &&
-                        (item.order === "asc" || item.order === "desc")
-                );
-            }
-        } catch (err) {
-            console.warn("Invalid sortBy query:", req.query.sortBy);
-        }
-    }
+    const sortBy: SortItem[] | undefined = Array.isArray(req.query.sortBy)
+        ? (req.query.sortBy as any[]).filter(
+              (item) =>
+                  typeof item === "object" &&
+                  item !== null &&
+                  "key" in item &&
+                  "order" in item &&
+                  typeof item.key === "string" &&
+                  (item.order === "asc" || item.order === "desc")
+          )
+        : undefined;
 
     return { search, page, itemsPerPage, sortBy };
 };
