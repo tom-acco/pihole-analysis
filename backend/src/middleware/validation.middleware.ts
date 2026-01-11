@@ -85,3 +85,24 @@ export const validateBulkDomainUpdate = (
 
     next();
 };
+
+/**
+ * Validates that an alias is provided in the request body
+ */
+export const validateAlias = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const alias = req.body.alias;
+
+    if (alias === undefined || alias === null) {
+        return res.status(400).send("Missing alias in request body");
+    }
+
+    if (typeof alias !== "string") {
+        return res.status(400).send("Alias must be a string");
+    }
+
+    next();
+};

@@ -4,7 +4,10 @@ import { ClientController } from "../controllers/client.controller.js";
 
 import { parsePagination } from "../utils/routes.js";
 import { asyncHandler } from "../middleware/error-handler.middleware.js";
-import { validateId } from "../middleware/validation.middleware.js";
+import {
+    validateId,
+    validateAlias
+} from "../middleware/validation.middleware.js";
 
 export const clientRouter = (): Router => {
     const router = Router();
@@ -35,6 +38,19 @@ export const clientRouter = (): Router => {
 
             return res.status(200).json(result);
         }, "getting client")
+    );
+
+    router.post(
+        "/client/alias",
+        validateAlias,
+        asyncHandler(async (req, res) => {
+            const result = await clientController.setAlias(
+                req.body.ipaddress,
+                req.body.alias
+            );
+
+            return res.status(200).json(result);
+        }, "setting client alias")
     );
 
     return router;

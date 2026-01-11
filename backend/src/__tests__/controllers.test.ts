@@ -194,6 +194,41 @@ describe("Controller Layer", () => {
                 expect(client.id).toBe(existing.id);
             });
         });
+
+        describe("setAlias", () => {
+            it("should set alias on client", async () => {
+                await Client.create({
+                    ipaddress: "192.168.1.1"
+                });
+
+                const result = await clientController.setAlias(
+                    "192.168.1.1",
+                    "Home PC"
+                );
+
+                expect(result.alias).toBe("Home PC");
+            });
+
+            it("should update existing alias", async () => {
+                await Client.create({
+                    ipaddress: "192.168.1.1",
+                    alias: "Old Alias"
+                });
+
+                const result = await clientController.setAlias(
+                    "192.168.1.1",
+                    "New Alias"
+                );
+
+                expect(result.alias).toBe("New Alias");
+            });
+
+            it("should throw exception when client not found", async () => {
+                await expect(
+                    clientController.setAlias("10.0.0.1", "Test")
+                ).rejects.toThrow(ClientControllerException);
+            });
+        });
     });
 
     describe("DomainController", () => {

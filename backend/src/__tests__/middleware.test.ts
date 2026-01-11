@@ -2,7 +2,8 @@ import type { Request, Response, NextFunction } from "express";
 import {
     validateId,
     validateDomain,
-    validateBulkDomainUpdate
+    validateBulkDomainUpdate,
+    validateAlias
 } from "../middleware/validation.middleware.js";
 import {
     validateDomainFormat,
@@ -271,6 +272,55 @@ describe("Validation Middleware", () => {
                 mockRes as Response,
                 mockNext
             );
+
+            expect(statusCalled).toBe(400);
+            expect(nextCalled).toBe(false);
+        });
+    });
+
+    describe("validateAlias", () => {
+        it("should pass validation with valid alias", () => {
+            mockReq.body = { alias: "Home PC" };
+
+            validateAlias(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(nextCalled).toBe(true);
+            expect(statusCalled).toBeNull();
+        });
+
+        it("should pass validation with empty string alias", () => {
+            mockReq.body = { alias: "" };
+
+            validateAlias(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(nextCalled).toBe(true);
+            expect(statusCalled).toBeNull();
+        });
+
+        it("should return 400 when alias is missing", () => {
+            mockReq.body = {};
+
+            validateAlias(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(statusCalled).toBe(400);
+            expect(sendCalled).toBe("Missing alias in request body");
+            expect(nextCalled).toBe(false);
+        });
+
+        it("should return 400 when alias is not a string", () => {
+            mockReq.body = { alias: 123 };
+
+            validateAlias(mockReq as Request, mockRes as Response, mockNext);
+
+            expect(statusCalled).toBe(400);
+            expect(sendCalled).toBe("Alias must be a string");
+            expect(nextCalled).toBe(false);
+        });
+
+        it("should return 400 when alias is null", () => {
+            mockReq.body = { alias: null };
+
+            validateAlias(mockReq as Request, mockRes as Response, mockNext);
 
             expect(statusCalled).toBe(400);
             expect(nextCalled).toBe(false);
