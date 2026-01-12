@@ -130,7 +130,7 @@
       ]);
       const defaultSort = ref<DataTableSortItem[]>([{ key: "queryCount", order: "desc" }]);
 
-      const selectedDomain = computed<Domain[] | null>({
+      const selectedDomain = computed<Domain[]>({
         get() {
           return props.modelValue;
         },
