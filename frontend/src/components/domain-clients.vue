@@ -7,7 +7,7 @@
         <v-container fluid>
           <v-row>
             <v-col cols="12">
-              <v-text-field v-model="filter" placeholder="Search" append-inner-icon="mdi-magnify" density="compact" hide-details clearable />
+              <v-text-field v-model="filter" placeholder="Search" append-inner-icon="mdi-magnify" hide-details clearable />
               <v-data-table
                 v-model="selectedClient"
                 color="primary"

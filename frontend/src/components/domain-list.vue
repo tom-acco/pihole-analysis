@@ -1,5 +1,5 @@
 <template>
-  <v-text-field v-model="filter" placeholder="Search" append-inner-icon="mdi-magnify" density="compact" hide-details clearable />
+  <v-text-field v-model="filter" placeholder="Search" append-inner-icon="mdi-magnify" hide-details clearable />
 
   <v-data-table-server
     :loading="loading"

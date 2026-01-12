@@ -24,32 +24,33 @@ const vuetify = createVuetify({
   },
   defaults: {
     VTextField: {
-      variant: "outlined",
+      variant: "solo-filled",
       color: "primary",
-      density: "compact"
+      density: "comfortable",
+      flat: true
     },
     VTextarea: {
-      variant: "outlined",
+      variant: "solo-filled",
       color: "primary"
     },
     VCheckbox: {
-      variant: "outlined",
+      variant: "solo-filled",
       color: "primary"
     },
     VSelect: {
-      variant: "outlined",
+      variant: "solo-filled",
       color: "primary"
     },
     VAutocomplete: {
-      variant: "outlined",
+      variant: "solo-filled",
       color: "primary"
     },
     VCombobox: {
-      variant: "outlined",
+      variant: "solo-filled",
       color: "primary"
     },
     VDateInput: {
-      variant: "outlined",
+      variant: "solo-filled",
       color: "primary"
     },
     VDataTable: {

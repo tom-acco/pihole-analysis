@@ -1,16 +1,16 @@
 <template>
   <v-text-field v-model="localValue" :readonly="!isEditing" :loading="loading" :disabled="loading" :label="label" hide-details>
     <template v-slot:append-inner>
-      <v-chip class="ml-2" v-if="!isEditing && !disabled" variant="text" color="blue-darken-2" @click="startEdit" label>
-        <v-icon icon="mdi-pencil"></v-icon>
+      <v-chip v-if="!isEditing && !disabled" class="ml-2" variant="outlined" color="blue-darken-2" @click="startEdit" label>
+        <v-icon icon="mdi-pencil" ></v-icon>
       </v-chip>
 
       <template v-else>
-        <v-chip class="ml-2" variant="text" color="green-darken-2" :disabled="loading" @click="handleSave" label>
+        <v-chip class="ml-2" variant="outlined" color="green-darken-2" :disabled="loading" @click="handleSave" label>
           <v-icon icon="mdi-check"></v-icon>
         </v-chip>
 
-        <v-chip class="ml-2" variant="text" color="red-darken-2" :disabled="loading" @click="cancelEdit" label>
+        <v-chip class="ml-2" variant="outlined" color="red-darken-2" :disabled="loading" @click="cancelEdit" label>
           <v-icon icon="mdi-close"></v-icon>
         </v-chip>
       </template>
