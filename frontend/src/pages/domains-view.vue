@@ -83,17 +83,29 @@
       });
 
       const getDomain = async () => {
-        domain.value = await api.getDomain(route.query.id as string);
+        const id = route.query.id;
+
+        if (!id || typeof id !== 'string') {
+          throw new Error('Invalid or missing domain ID');
+        }
+
+        domain.value = await api.getDomain(id);
       };
 
       onMounted(async () => {
         loading.value = true;
 
-        await getDomain();
-
-        setTimeout(() => {
-          loading.value = false;
-        }, store.debounceMs);
+        try {
+          await getDomain();
+        } catch (err) {
+          console.error('Failed to load domain:', err);
+          // Optionally redirect back to domains list
+          // router.push({ name: 'main.domains' });
+        } finally {
+          setTimeout(() => {
+            loading.value = false;
+          }, store.debounceMs);
+        }
       });
 
       return {

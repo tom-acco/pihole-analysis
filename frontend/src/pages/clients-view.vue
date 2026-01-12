@@ -84,17 +84,29 @@
       });
 
       const getClient = async () => {
-        client.value = await api.getClient(route.query.id as string);
+        const id = route.query.id;
+
+        if (!id || typeof id !== 'string') {
+          throw new Error('Invalid or missing client ID');
+        }
+
+        client.value = await api.getClient(id);
       };
 
       onMounted(async () => {
         loading.value = true;
 
-        await getClient();
-
-        setTimeout(() => {
-          loading.value = false;
-        }, store.debounceMs);
+        try {
+          await getClient();
+        } catch (err) {
+          console.error('Failed to load client:', err);
+          // Optionally redirect back to clients list
+          // router.push({ name: 'main.clients' });
+        } finally {
+          setTimeout(() => {
+            loading.value = false;
+          }, store.debounceMs);
+        }
       });
 
       return {
