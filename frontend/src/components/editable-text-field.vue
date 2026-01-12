@@ -6,11 +6,11 @@
       </v-chip>
 
       <template v-else>
-        <v-chip class="ml-2" variant="text" color="green-darken-2" @click="handleSave" label>
+        <v-chip class="ml-2" variant="text" color="green-darken-2" :disabled="loading" @click="handleSave" label>
           <v-icon icon="mdi-check"></v-icon>
         </v-chip>
 
-        <v-chip class="ml-2" variant="text" color="red-darken-2" @click="cancelEdit" label>
+        <v-chip class="ml-2" variant="text" color="red-darken-2" :disabled="loading" @click="cancelEdit" label>
           <v-icon icon="mdi-close"></v-icon>
         </v-chip>
       </template>

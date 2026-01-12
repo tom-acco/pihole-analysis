@@ -7,21 +7,11 @@
         <v-container fluid>
           <v-row>
             <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="ipaddressValue"
-                label="IP Address"
-                readonly
-                hide-details
-              />
+              <v-text-field v-model="ipaddressValue" label="IP Address" readonly hide-details />
             </v-col>
 
             <v-col cols="12" sm="6">
-              <editable-text-field
-                v-model="aliasValue"
-                label="Alias"
-                :loading="loading"
-                @save="handleSave"
-              />
+              <editable-text-field v-model="aliasValue" label="Alias" :loading="loading" @save="handleSave" />
             </v-col>
           </v-row>
         </v-container>
