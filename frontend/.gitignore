@@ -35,6 +35,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.claude
 
 # Temporary files
 *.tmp
