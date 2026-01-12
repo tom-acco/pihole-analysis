@@ -25,7 +25,8 @@ const vuetify = createVuetify({
   defaults: {
     VTextField: {
       variant: "outlined",
-      color: "primary"
+      color: "primary",
+      density: "compact"
     },
     VTextarea: {
       variant: "outlined",

@@ -29,9 +29,6 @@
         <client-info v-model="selectedClient"></client-info>
       </v-col>
       <v-col class="py-0" v-if="selectedClients.length >= 1" cols="12">
-        <client-actions v-model="selectedClient"></client-actions>
-      </v-col>
-      <v-col class="py-0" v-if="selectedClients.length >= 1" cols="12">
         <query-count-line v-model="selectedClient.Queries" :key="selectedClient.id"></query-count-line>
       </v-col>
     </v-row>
@@ -51,7 +48,6 @@
   import DomainActions from "@/components/domain-actions.vue";
   import DomainClients from "@/components/domain-clients.vue";
   import ClientInfo from "@/components/client-info.vue";
-  import ClientActions from "@/components/client-actions.vue";
   import QueryCountLine from "@/components/query-count-line.vue";
 
   export default {
@@ -60,7 +56,6 @@
       DomainActions,
       DomainClients,
       ClientInfo,
-      ClientActions,
       QueryCountLine
     },
 

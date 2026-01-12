@@ -8,10 +8,6 @@
       </v-col>
 
       <v-col class="py-0" cols="12">
-        <client-actions v-model="client"></client-actions>
-      </v-col>
-
-      <v-col class="py-0" cols="12">
         <client-domains v-model="selectedDomains" :items="client.Domains"></client-domains>
       </v-col>
 
@@ -50,7 +46,6 @@
   import type { Client, Domain } from "@/interfaces";
 
   import ClientInfo from "@/components/client-info.vue";
-  import ClientActions from "@/components/client-actions.vue";
   import ClientDomains from "@/components/client-domains.vue";
   import DomainInfo from "@/components/domain-info.vue";
   import DomainActions from "@/components/domain-actions.vue";
@@ -59,7 +54,6 @@
   export default {
     components: {
       ClientInfo,
-      ClientActions,
       ClientDomains,
       DomainInfo,
       DomainActions,

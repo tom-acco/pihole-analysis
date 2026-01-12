@@ -11,7 +11,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ClientActions: typeof import('./components/client-actions.vue')['default']
     ClientDomains: typeof import('./components/client-domains.vue')['default']
     ClientInfo: typeof import('./components/client-info.vue')['default']
     ClientList: typeof import('./components/client-list.vue')['default']
@@ -22,6 +21,7 @@ declare module 'vue' {
     DomainList: typeof import('./components/domain-list.vue')['default']
     DomainListActions: typeof import('./components/domain-list-actions.vue')['default']
     DomainMenu: typeof import('./components/domain-menu.vue')['default']
+    EditableTextField: typeof import('./components/editable-text-field.vue')['default']
     QueryCountLine: typeof import('./components/query-count-line.vue')['default']
     RiskRating: typeof import('./components/risk-rating.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
