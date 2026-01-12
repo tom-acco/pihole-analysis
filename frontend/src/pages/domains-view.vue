@@ -73,7 +73,17 @@
         },
         set(value) {
           if (!value || !selectedClients.value) return;
+
+          // Update the client in the selectedClients array
           selectedClients.value = [value, ...selectedClients.value.slice(1)];
+
+          // Also update the client in the domain.Clients array to keep the table in sync
+          if (domain.value.Clients) {
+            const index = domain.value.Clients.findIndex(c => c.id === value.id);
+            if (index !== -1) {
+              domain.value.Clients[index] = value;
+            }
+          }
         }
       });
 
