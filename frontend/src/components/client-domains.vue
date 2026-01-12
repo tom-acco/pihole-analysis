@@ -68,7 +68,7 @@
   import { defineComponent, ref, computed } from "vue";
   import { useStore } from "@/store";
 
-  import type { Domain, Query } from "@/interfaces";
+  import type { Domain } from "@/interfaces";
 
   import type { DataTableHeader } from "vuetify";
   import type { DataTableSortItem } from "vuetify";

@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from "vue";
+  import { defineComponent, ref, computed } from "vue";
   import { toast } from "vue3-toastify";
   import { useStore } from "@/store";
 
