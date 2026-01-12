@@ -1,17 +1,13 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+
+import { handleApiError } from "./utils";
 
 const getLog = async () => {
   try {
     const res = await axios.get("/api/sync");
     return res.data;
   } catch (err) {
-    if (err instanceof AxiosError) {
-      throw err.response?.data?.message || err.message;
-    } else if (err instanceof Error) {
-      throw err.message;
-    } else {
-      throw String(err);
-    }
+    handleApiError(err);
   }
 };
 
@@ -20,17 +16,11 @@ const syncNow = async () => {
     const res = await axios.post("/api/sync");
     return res.data;
   } catch (err) {
-    if (err instanceof AxiosError) {
-      throw err.response?.data?.message || err.message;
-    } else if (err instanceof Error) {
-      throw err.message;
-    } else {
-      throw String(err);
-    }
+    handleApiError(err);
   }
 };
 
 export default {
-  getLog: getLog,
-  syncNow: syncNow,
+  getLog,
+  syncNow
 };

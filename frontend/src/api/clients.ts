@@ -1,6 +1,7 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 import type { DataTableParams } from "@/interfaces";
+import { handleApiError } from "./utils";
 
 const getClients = async (params: DataTableParams) => {
   try {
@@ -10,13 +11,7 @@ const getClients = async (params: DataTableParams) => {
       items: res.data.rows
     };
   } catch (err) {
-    if (err instanceof AxiosError) {
-      throw err.response?.data?.message || err.message;
-    } else if (err instanceof Error) {
-      throw err.message;
-    } else {
-      throw String(err);
-    }
+    handleApiError(err);
   }
 };
 
@@ -25,13 +20,7 @@ const getClient = async (id: string) => {
     const res = await axios.get("/api/client", { params: { id: id } });
     return res.data;
   } catch (err) {
-    if (err instanceof AxiosError) {
-      throw err.response?.data?.message || err.message;
-    } else if (err instanceof Error) {
-      throw err.message;
-    } else {
-      throw String(err);
-    }
+    handleApiError(err);
   }
 };
 
@@ -40,18 +29,12 @@ const setAlias = async (id: string, alias: string) => {
     const res = await axios.put("/api/client/alias", { id: id, alias: alias });
     return res.data;
   } catch (err) {
-    if (err instanceof AxiosError) {
-      throw err.response?.data?.message || err.message;
-    } else if (err instanceof Error) {
-      throw err.message;
-    } else {
-      throw String(err);
-    }
+    handleApiError(err);
   }
 };
 
 export default {
-  getClients: getClients,
-  getClient: getClient,
-  setAlias: setAlias
+  getClients,
+  getClient,
+  setAlias
 };
